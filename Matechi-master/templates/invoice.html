@@ -1,0 +1,168 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Invoice</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel = "icon" href = "{% static 'assets/images/logos/logo-for-tab.png'%}" type = "image/x-icon">
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/css/invoice.css'%}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+</head>
+
+<body>
+    {% if order %}
+    <div class="container bootstrap snippets bootdeys">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default invoice" id="invoice">
+                    <div class="panel-body">
+
+                        <div class="row" id = 'invoice-header'>
+
+                            <div class="col-sm-6 top-left">
+                                <img src="{% static 'assets/images/logos/fa.png'%}" class="header-logo" alt="Footer Logo">
+                                <p>Pan No : 1203792</p>
+                            </div>
+
+                            <div class="col-sm-6 top-right">
+                                {% for o in order %}
+                                 {% if forloop.first %}
+                                <h3 class="marginright">INVOICE - {{o.id}}</h3>
+                                <span class="marginright">{{o.ordered_date}}</span>
+                            </div>
+
+                        </div>
+                        <hr>
+                        <div class="row">
+
+                            <div class="col-xs-4 from">
+                                <p class="lead marginbottom"><b>Billing Address</b></p>
+                                {% for e in o.billingaddress_set.all %}
+                                <p>{{e.first_name}} {{e.last_name}}</p>
+                                <p>{{e.locality}}, {{e.city}}</p>
+                                <p>Province : {{e.province}}</p>
+                                {% if e.zipcode %}
+                                <p>Zipcode : {{e.zipcode}}</p>
+                                {% endif %}
+                                <p>Phone: {{e.phone}}</p>
+                                {% if e.alternative_phone_number %}
+                                <p>{{e.alternative_phone_number}}</p>
+                                {% endif %}
+                                {% if e.customer_pan_number %}
+                                <p>Zipcode : {{e.customer_pan_number}}</p>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-xs-4 to">
+                                <p class="lead marginbottom"><b>Shipping Address</b></p>
+                                {% for e in o.shippingaddress_set.all %}
+                                <p>{{e.first_name}} {{e.last_name}}</p>
+                                <p>{{e.locality}}, {{e.city}}</p>
+                                <p>Province : {{e.province}}</p>
+                                {% if e.zipcode %}
+                                <p>Zipcode : {{e.zipcode}}</p>
+                                {% endif %}
+                                <p>Phone: {{e.phone}}</p>
+                                {% if e.alternative_phone_number %}
+                                <p>{{e.alternative_phone_number}}</p>
+                                {% endif %}
+                                {% endfor %}
+
+                            </div>
+
+                            <div class="col-xs-4 text-right payment-details">
+                                <p class="lead marginbottom payment-info"><b>Payment Details</b></p>
+                                <p>Date: {{o.ordered_date}}</p>
+                                <p>Total Amount: NPR {{o.total_paid_price}}</p>
+                            </div>
+
+                        </div>
+
+                        <div class="row table-row">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="width:5%">#</th>
+                                        <th style="width:50%">Item</th>
+                                        <th class="text-right" style="width:15%">Quantity</th>
+                                        <th class="text-right" style="width:15%">Unit Price</th>
+                                        <th class="text-right" style="width:15%">Total Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for e in o.orderitem_set.all %}
+                                    <tr>
+                                        <td class="text-center">{{forloop.counter}}</td>
+                                        <td>{{e.product}}</td>
+                                        <td class="text-right">{{e.quantity}}</td>
+                                        <td class="text-right">{{e.unit_price}}</td>
+                                        <td class="text-right">{{e.total_price}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-6 text-right pull-right invoice-total">
+                                <p> <b>Subtotal : </b> NPR {{o.subtotal_price}}</p>
+                                {% if o.discount_amount %}
+                                <p> <b>Discount : </b> NPR {{o.discount_amount}} </p>
+                                {% else %}
+                                <p> <b>Discount : </b> NPR 0</p>
+                                {% endif %}
+
+                                {% if o.Coupon_used %}
+                                <p> <b>Coupon Code : </b> {{o.Coupon_used}} </p>
+                                {% endif %}
+                                <p> <b>Total Price : </b> NPR {{o.total_paid_price}} </p>
+                                <p> <b>Payment Method : </b> {{o.payment_method}}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col margintop bottom-container">
+                    <button class="btn btn-success" id="invoice-print"><i class="fa fa-print"></i> Print Invoice</button>
+                    <button class="btn btn-danger" data-filename = {{o.id}} id = 'download-pdf'><i class="fa fa-save"></i> Download Invoice as pdf</button>
+                    <a href = "{% url 'home' %}"><button class="btn btn-info"><i class="fa fa-shopping-cart"></i> Continue Shopping</button><a>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <section class="page_404">
+        <div class="fouro-container">
+            <div class="four_zero_four_bg">
+                <h1 class="text-center ">Access Denied</h1>
+            </div>
+    
+            <div class="contant_box_404">
+            <h3 class="h2">
+                Sorry! You cannot view this page. 
+            </h3>
+            
+            <p>If you think you should be able to view this page. Contact the page admin.</p>
+            
+            <a href="{% url 'home' %}" class="link_404">Go to Home</a>
+        </div>
+    
+        </div>
+    </section>
+    {% endif %}
+
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src = "{% static 'assets/js/invoice.js' %}">
+    </script>
+</body>
+
+</html>

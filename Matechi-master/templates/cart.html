@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta-contents %}
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content='Buy Acer, Apple MacBook, Asus, HP, Lenovo, Microsoft, MSI Razer Blade, Dell, ultrabook in Nepal at best price at Matechi'/>
+<meta name="keywords" content='Acer, Apple, Asus, HP, Dell, Lenovo, Alienware, MSI, Fantech, Razerblade, Microsoft'/>
+<meta name="robots" content="INDEX,FOLLOW"/>
+<meta name="format-detection" content="telephone=no"/>
+<title>Matechi Cart | Dell, HP, Apple MacBook, Acer, Asus, Lenovo, MS</title>
+{% endblock %}
+
+{% block link-content %}
+<!-- Plugins CSS File -->
+<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+<!-- Main CSS File -->
+<link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+<link rel="stylesheet" href="{% static 'assets/css/cart.css'%}">
+{% endblock %}
+
+
+{% block content %}
+{% if cart_items %}
+<div class="page-content">
+    <div class="cart">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9">
+                    <table class="table table-cart table-mobile">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        {% for c in cart_items %}
+                        <tbody>
+                            <tr>
+                                <td class="product-col">
+                                    <div class="product">
+                                        <figure class="product-media">
+                                            <a href="#">
+                                                <img src="{{c.product.thumbnail.url}}" alt="Product image">
+                                            </a>
+                                        </figure>
+
+                                        <h3 class="product-title">
+                                            <a href="#">{{c.product.product_name}}</a>
+                                        </h3>
+                                        <!-- End .product-title -->
+                                    </div>
+                                    <!-- End .product -->
+                                </td>
+                                <td class="price-col">
+                                   NPR: {{c.product.current_price}}
+                                </td>
+                                <td class="quantity-col">
+                                    <div class="cart-product-quantity">
+                                        <input type="number" class="input-spinner-form" data-product = {{c.product.id}} value="{{c.quantity}}" min="0" max="{{c.product.quantity}}" step="1" data-decimals="0" required>
+                                    </div><!-- End .cart-product-quantity -->    
+                                    <!-- End .cart-product-quantity -->
+                                </td>
+                                <td class="total-col">{{c.get_total_cart_item}}</td>
+                                <td class="remove-col"><button data-product = {{c.product.id}} data-action = "delete" class="btn-remove"><i class="icon-close"></i></button></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <!-- End .table table-wishlist -->
+
+                    <div class="cart-bottom">
+                        <a href="#" class="btn btn-primary" id = 'update-cart-btn'><span>UPDATE CART</span><i class="icon-refresh"></i></a>
+                    </div>
+                    <!-- End .cart-bottom -->
+                </div>
+                <!-- End .col-lg-9 -->
+                <aside class="col-lg-3">
+                    <div class="summary summary-cart">
+                        <h3 class="summary-title">Cart Total</h3>
+                        <!-- End .summary-title -->
+
+                        <table class="table table-summary">
+                            <tbody>
+                                <tr class ='summary-totalitems'> 
+                                    <td>Items:</td>
+                                    <td>{{total_quantity}}</td>
+                                </tr>
+                                <tr class="summary-subtotal">
+                                    <td>Subtotal:</td>
+                                    <td>NPR :&nbsp;{{subtotal_price}}</td>
+                                </tr>
+                                <!-- End .summary-subtotal -->
+                                <tr class="summary-delivery summary-subtotal">
+                                    <td>Delivery:</td>
+                                    <td>NPR :&nbsp;{{delivery_charge}}</td>
+                                </tr>
+
+                                <tr class="summary-total">
+                                    <td>Total:</td>
+                                    <td>NPR :&nbsp;{{total_price}}</td>
+                                </tr>
+                                <!-- End .summary-total -->
+                            </tbody>
+                        </table>
+                        <!-- End .table table-summary -->
+
+                        <a href="{% url 'checkout' %}" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
+                    </div>
+                    <!-- End .summary -->
+
+                    <a href="{% url 'home' %}" class="btn btn-outline-primary-2 btn-block mb-3"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
+                </aside>
+                <!-- End .col-lg-3 -->
+            </div>
+            <!-- End .row -->
+        </div>
+        <!-- End .container -->
+    </div>
+    <!-- End .cart -->
+</div>
+<!-- End .page-content -->
+{% else %}
+<div class="container-fluid mt-100">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body cart">
+                    <div class="col-sm-12 empty-cart-cls text-center"> <img id='empty-cart' src="https://i.imgur.com/dCdflKN.png">
+                        <h3><strong>Your Cart is Empty</strong></h3>
+                        <h4>Add something to continue to checkout  :)</h4> <a href="{% url 'home' %}" class="btn btn-outline-info cart-btn-transform m-3" data-abc="true">Continue shopping</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+</body>
+{% endblock %}
+
+{% block script_content %}
+    <!-- Main JS File -->
+    
+    <script src="{% static 'assets/js/cart_page.js'%}"></script>
+{% endblock %}

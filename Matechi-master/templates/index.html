@@ -1,0 +1,569 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta-contents %}
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content='Buy Acer, Apple MacBook, Asus, HP, Lenovo, Microsoft, MSI Razer Blade, Dell, ultrabook in Nepal at best price at Matechi'/>
+<meta name="keywords" content='Acer, Apple, Asus, HP, Dell, Lenovo, Alienware, MSI, Fantech, Razerblade, Microsoft'/>
+<meta name="robots" content="INDEX,FOLLOW"/>
+<meta name="format-detection" content="telephone=no"/>
+<title>Laptop price in Nepal {{current_year}} | Dell, HP, Apple MacBook, Acer, Asus, Lenovo, MS</title>
+{% endblock %}
+
+{% block link-content %}
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/star-rating-svg.css' %}">
+<link rel="stylesheet " href="{% static 'assets/css/index.css'%} ">
+{% endblock %}
+
+{% block content %}
+
+<main class="main">
+    <div class="intro-slider-container top-carousel">
+        <div class="intro-slider owl-carousel owl-simple owl-nav-inside" data-toggle="owl" data-owl-options='{
+                "nav": false,
+                "lazyLoad" : true,
+                "nav": true, 
+                "dots": true,
+                "margin": 20,
+                "loop": true,
+                "autoplay" : true,
+                "slideBy" : "1",
+                "autoplaySpeed" : 1000,
+                "autoplayTimeout" : 5000,
+                "autoplayHoverPause" : true,
+                "responsive": {
+                    "992": {
+                        "nav": true
+                    }
+                }
+            }'>
+            {% for b1 in banner1 %}
+            {% for e in b1.banners_set.all %}
+            <div class="top-carousel-container">
+                <a href = '{{e.link}}'><img class = 'top-carousel-img' src = '{{e.image.url}}'></a>
+              </div>
+              {% endfor %}
+              {% endfor %}
+
+
+        </div><!-- End .owl-carousel owl-simple -->
+        <span class="slider-loader"></span><!-- End .slider-loader -->
+    </div><!-- End .intro-slider-container -->
+
+    <div class="mb-3"></div><!-- End .mb-3 -->
+    <div class="mb-5"></div><!-- End .mb-3 -->
+
+
+    <div class="container">
+        <p class = 'head-text-simple' >Popular Categories</p>
+        
+
+        <div class="cat-blocks-container">
+            <div class="row" id = 'pop-cats'>
+                {% for s in subcategory %}
+                <div class="col-6 col-sm-4 col-lg-2" id = 'each-category'>
+                    <a href="{% url 'subcategory' s.slug %}" class="cat-block">
+                            {% if s.sub_category_image %}
+                            <img src="{{s.sub_category_image.url}}" alt="Category image">
+                            {% endif %}
+                        <p class="cat-block-title" style = 'color: rgb(53, 53, 53); '>{{s.name}}</p>
+                    </a>
+                </div>
+                {% endfor %}
+            </div><!-- End .row -->
+        </div><!-- End .cat-blocks-container -->
+    </div><!-- End .container -->
+
+    <div class="mb-2"></div><!-- End .mb-2 -->
+
+    <div class="mb-3"></div><!-- End .mb-3 -->
+
+    <div class = 'brand-custom-container'>
+        <a href = "{% url 'brand-mall' %}"><img class = 'first-image' src = "{% static 'assets/images/backgrounds/brand-mall-header.jpg' %}"></a>
+        <a href = "{% url 'custom-pc' %}"><img class = 'second-image' src = "{% static 'assets/images/backgrounds/brand-mall-header.jpg' %}"></a>
+    </div>
+
+
+    <div class="feat-more">
+            {% for f in featured_products %}
+            {% if forloop.first %}
+            <p class = 'head-text' >{{f.name}}</p>
+            {% endif %}
+            {% endfor %}
+
+            <div class = 'mb-6'></div>
+
+            <div class="tab-content tab-content-carousel">
+                <div class="tab-pane p-0 fade show active" id="hot-all-tab" role="tabpanel" aria-labelledby="hot-all-link">
+                    <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                        data-owl-options='{
+                            "lazyLoad" : true,
+                            "nav": true, 
+                            "dots": true,
+                            "margin": 20,
+                            "loop": true,
+                            "autoplay" : true,
+                            "slideBy" : "1",
+                            "autoplaySpeed" : 3000,
+                            "autoplayTimeout" : 3000,
+                            "autoplayHoverPause" : true,
+                            "responsive": {
+                                "0": {
+                                    "items":2
+                                },
+                                "480": {
+                                    "items":2
+                                },
+                                "768": {
+                                    "items":3
+                                },
+                                "992": {
+                                    "items":4
+                                },
+                                "1280": {
+                                    "items":4,
+                                    "nav": true
+                                }
+                            }
+                        }'>
+                        {% for f in featured_products %}
+                        {% for e in f.showcase_products1_set.all %}
+                            <div class="product product-7 text-center">
+                                <figure class="product-media">
+                                    {% if e.product.availability == 'NO' %}
+                                    <span class="product-label badge bg-danger" style = 'color: white;'>Out of Stock</span>
+                                    {% else %}
+                                        {% if e.product.new == 'YES' %}
+                                        <span class="product-label badge label-new">New</span>
+                                        {% endif %}
+                                        {% if e.product.sale == 'YES' %}
+                                        <span class="product-label badge bg-danger" style = 'color: white;'>Sale</span>
+                                        {% endif %}
+                                        {% if e.product.discount_percentage %}
+                                        <span class="product-label label-sale">{{e.product.discount_percentage}}% Off</span>
+                                        {% endif %}
+                                    {% endif %}
+                                
+                                    <a href="{% url 'detailed_product' e.product.slug %}">
+                                        <img src="{{e.product.thumbnail.url}}" alt="Product image" class="product-image">
+                                    </a>
+
+                                    <!-- End .product-action -->
+                                </figure>
+                                <!-- End .product-media -->
+
+                                <div class="custom-product">
+                                    <div class = 'product-name'>
+                                        {{e.product.product_name}}
+                                    </div>
+                                    
+                                    <div class ='rating-container'>
+                                        <div class="my-rating" data-rating={{e.product.average_rating}}></div>
+                                    </div>
+
+                                    <div class = 'current-price-container'>
+                                        <p class = 'current-price'> NPR {{e.product.current_price}}</p>
+                                    </div>
+
+                                    <div class = 'previous-price-container'>
+                                        {% if e.product.previous_price %}
+                                        <p class = 'previous-price'><del>NPR {{e.product.previous_price}}</del></p>
+                                        {% endif %}
+                                        {% if e.product.discount_percentage %}
+                                        <p class = 'discount'>&nbsp;({{e.product.discount_percentage}}% off)</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <!-- End .product-body -->
+                            </div>
+                            <!-- End .product -->
+                        {% endfor %}
+                    {% endfor %}
+
+                    </div><!-- End .owl-carousel -->
+                </div><!-- .End .tab-pane -->   
+
+                <div class="pt-3 pb-5">
+                    <p class = 'head-text'>{{subcat1}}</p>
+
+                    <div class = 'mb-6'></div>
+            
+                        <div class="tab-content tab-content-carousel">
+                            <div class="tab-pane p-0 fade show active" id="hot-all-tab" role="tabpanel" aria-labelledby="hot-all-link">
+                                <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                                data-owl-options='{
+                                    "lazyLoad" : true,
+                                    "nav": true, 
+                                    "dots": true,
+                                    "margin": 20,
+                                    "loop": true,
+                                    "autoplay" : true,
+                                    "slideBy" : "1",
+                                    "autoplaySpeed" : 3000,
+                                    "autoplayTimeout" : 3000,
+                                    "autoplayHoverPause" : true,
+                                    "responsive": {
+                                        "0": {
+                                            "items":2
+                                        },
+                                        "480": {
+                                            "items":2
+                                        },
+                                        "768": {
+                                            "items":3
+                                        },
+                                        "992": {
+                                            "items":4
+                                        },
+                                        "1280": {
+                                            "items":4,
+                                            "nav": true
+                                        }
+                                    }
+                                }'>
+                                    {% for p in products1 %}
+                                        <div class="product product-7 text-center">
+                                            <figure class="product-media">
+                                                {% if p.availability == 'NO' %}
+                                                <span class="product-label badge bg-danger" style = 'color: white;'>Out of Stock</span>
+                                                {% else %}
+                                                    {% if p.new == 'YES' %}
+                                                    <span class="product-label badge label-new">New</span>
+                                                    {% endif %}
+                                                    {% if p.sale == 'YES' %}
+                                                    <span class="product-label badge bg-danger" style = 'color: white;'>Sale</span>
+                                                    {% endif %}
+                                                    {% if p.discount_percentage %}
+                                                    <span class="product-label label-sale">{{p.discount_percentage}}% Off</span>
+                                                    {% endif %}
+                                                {% endif %}
+                                            
+                                                <a href="{% url 'detailed_product' p.slug %}">
+                                                    <img src="{{p.thumbnail.url}}" alt="Product image" class="product-image">
+                                                </a>
+            
+                                                <!-- End .product-action -->
+                                            </figure>
+                                            <!-- End .product-media -->
+            
+                                            <div class="custom-product">
+                                                <div class = 'product-name'>
+                                                    {{p.product_name}}
+                                                </div>
+                                                
+                                                <div class ='rating-container'>
+                                                    <div class="my-rating" data-rating={{p.average_rating}}></div>
+                                                </div>
+            
+                                                <div class = 'current-price-container'>
+                                                    <p class = 'current-price'> NPR {{p.current_price}}</p>
+                                                </div>
+            
+                                                <div class = 'previous-price-container'>
+                                                    {% if p.previous_price %}
+                                                    <p class = 'previous-price'><del>NPR {{p.previous_price}}</del></p>
+                                                    {% endif %}
+                                                    {% if p.discount_percentage %}
+                                                    <p class = 'discount'>&nbsp;({{p.discount_percentage}}% off)</p>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <!-- End .product-body -->
+                                        </div>
+                                        <!-- End .product -->
+                                    {% endfor %}
+            
+                                </div><!-- End .owl-carousel -->
+                            </div><!-- .End .tab-pane -->
+
+                    </div> 
+                </div>       
+                            
+
+    <div class="mb-4"></div><!-- End .mb-3 -->
+
+    <div class="intro-slider-container">
+        <div class="intro-slider owl-carousel owl-simple owl-nav-inside" data-toggle="owl" data-owl-options='{
+                "nav": false,
+                "lazyLoad" : true,
+                "nav": true, 
+                "dots": true,
+                "margin": 20,
+                "loop": true,
+                "autoplay" : true,
+                "slideBy" : "1",
+                "autoplaySpeed" : 1000,
+                "autoplayTimeout" : 5000,
+                "autoplayHoverPause" : true,
+                "responsive": {
+                    "992": {
+                        "nav": true
+                    }
+                }
+            }'>
+            {% for b1 in banner2 %}
+            {% for e in b1.bannerimages_set.all %}
+            <a href = '{{e.link}}'><img class = 'banner2-slideshow' src = '{{e.images.url}}' ></a>
+            {% endfor %}
+            {% endfor %}
+
+        </div><!-- End .owl-carousel owl-simple -->
+        <span class="slider-loader"></span><!-- End .slider-loader -->
+    </div><!-- End .intro-slider-container -->
+
+    <div class="mb-4"></div><!-- End .mb-3 -->
+        <p class = 'head-text'>{{subcat2}}</p>
+
+        <div class ='mb-6'></div>
+
+        <div class="tab-content tab-content-carousel">
+            <div class="tab-pane p-0 fade show active" id="hot-all-tab" role="tabpanel" aria-labelledby="hot-all-link">
+                <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                data-owl-options='{
+                    "lazyLoad" : true,
+                    "nav": true, 
+                    "dots": true,
+                    "margin": 20,
+                    "loop": true,
+                    "autoplay" : true,
+                    "slideBy" : "1",
+                    "autoplaySpeed" : 3000,
+                    "autoplayTimeout" : 3000,
+                    "autoplayHoverPause" : true,
+                    "responsive": {
+                        "0": {
+                            "items":2
+                        },
+                        "480": {
+                            "items":2
+                        },
+                        "768": {
+                            "items":3
+                        },
+                        "992": {
+                            "items":4
+                        },
+                        "1280": {
+                            "items":4,
+                            "nav": true
+                        }
+                    }
+                }'>
+                    {% for p in products2 %}
+                        <div class="product product-7 text-center">
+                            <figure class="product-media">
+                                {% if p.availability == 'NO' %}
+                                <span class="product-label badge bg-danger" style = 'color: white;'>Out of Stock</span>
+                                {% else %}
+                                    {% if p.new == 'YES' %}
+                                    <span class="product-label badge label-new">New</span>
+                                    {% endif %}
+                                    {% if p.sale == 'YES' %}
+                                    <span class="product-label badge bg-danger" style = 'color: white;'>Sale</span>
+                                    {% endif %}
+                                    {% if p.discount_percentage %}
+                                    <span class="product-label label-sale">{{p.discount_percentage}}% Off</span>
+                                    {% endif %}
+                                {% endif %}
+                            
+                                <a href="{% url 'detailed_product' p.slug %}">
+                                    <img src="{{p.thumbnail.url}}" alt="Product image" class="product-image">
+                                </a>
+
+                                <!-- End .product-action -->
+                            </figure>
+                            <!-- End .product-media -->
+
+                            <div class="custom-product">
+                                <div class = 'product-name'>
+                                    {{p.product_name}}
+                                </div>
+                                
+                                <div class ='rating-container'>
+                                    <div class="my-rating" data-rating={{p.average_rating}}></div>
+                                </div>
+
+                                <div class = 'current-price-container'>
+                                    <p class = 'current-price'> NPR {{p.current_price}}</p>
+                                </div>
+
+                                <div class = 'previous-price-container'>
+                                    {% if p.previous_price %}
+                                    <p class = 'previous-price'><del>NPR {{p.previous_price}}</del></p>
+                                    {% endif %}
+                                    {% if p.discount_percentage %}
+                                    <p class = 'discount'>&nbsp;({{p.discount_percentage}}% off)</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <!-- End .product-body -->
+                        </div>
+                        <!-- End .product -->
+                    {% endfor %}
+
+                </div><!-- End .owl-carousel -->
+            </div><!-- .End .tab-pane -->
+
+
+    <div class="mb-4"></div><!-- End .mb-1 -->
+
+        <p class = 'head-text'>{{subcat3}}</p>
+
+        <div class = 'mb-6'></div>
+
+
+        </div><!-- End .heading -->
+
+        <div class="tab-content tab-content-carousel" >
+            <div class="tab-pane p-0 fade show active" id="hot-all-tab" role="tabpanel" aria-labelledby="hot-all-link">
+                <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                data-owl-options='{
+                    "lazyLoad" : true,
+                    "nav": true, 
+                    "dots": true,
+                    "margin": 20,
+                    "loop": true,
+                    "autoplay" : true,
+                    "slideBy" : "1",
+                    "autoplaySpeed" : 3000,
+                    "autoplayTimeout" : 3000,
+                    "autoplayHoverPause" : true,
+                    "responsive": {
+                        "0": {
+                            "items":2
+                        },
+                        "480": {
+                            "items":2
+                        },
+                        "768": {
+                            "items":3
+                        },
+                        "992": {
+                            "items":4
+                        },
+                        "1280": {
+                            "items":4,
+                            "nav": true
+                        }
+                    }
+                }'>
+                    {% for p in products3 %}
+                        <div class="product product-7 text-center">
+                            <figure class="product-media">
+                                {% if p.availability == 'NO' %}
+                                <span class="product-label badge bg-danger" style = 'color: white;'>Out of Stock</span>
+                                {% else %}
+                                    {% if p.new == 'YES' %}
+                                    <span class="product-label badge label-new">New</span>
+                                    {% endif %}
+                                    {% if p.sale == 'YES' %}
+                                    <span class="product-label badge bg-danger" style = 'color: white;'>Sale</span>
+                                    {% endif %}
+                                    {% if p.discount_percentage %}
+                                    <span class="product-label label-sale">{{p.discount_percentage}}% Off</span>
+                                    {% endif %}
+                                {% endif %}
+                            
+                                <a href="{% url 'detailed_product' p.slug %}">
+                                    <img src="{{p.thumbnail.url}}" alt="Product image" class="product-image">
+                                </a>
+
+                                <!-- End .product-action -->
+                            </figure>
+                            <!-- End .product-media -->
+
+                            <div class="custom-product">
+                                <div class = 'product-name'>
+                                    {{p.product_name}}
+                                </div>
+                                
+                                <div class ='rating-container'>
+                                    <div class="my-rating" data-rating={{p.average_rating}}></div>
+                                </div>
+
+                                <div class = 'current-price-container'>
+                                    <p class = 'current-price'> NPR {{p.current_price}}</p>
+                                </div>
+
+                                <div class = 'previous-price-container'>
+                                    {% if p.previous_price %}
+                                    <p class = 'previous-price'><del>NPR {{p.previous_price}}</del></p>
+                                    {% endif %}
+                                    {% if p.discount_percentage %}
+                                    <p class = 'discount'>&nbsp;({{p.discount_percentage}}% off)</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <!-- End .product-body -->
+                        </div>
+                        <!-- End .product -->
+                    {% endfor %}
+
+                </div><!-- End .owl-carousel -->
+            </div><!-- .End .tab-pane -->
+
+
+    <div class="mb-3"></div><!-- End .mb-3 -->
+
+
+    <div class="mb-3"></div><!-- End .mb-3 -->
+
+        <p class="title text-center head-text-simple">Shop by Brands</p><!-- End .title -->
+        <div class = 'mb-4'></div>
+        <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+        data-owl-options='{
+            "lazyLoad" : true,
+            "nav": true, 
+            "dots": true,
+            "margin": 20,
+            "loop": true,
+            "autoplay" : true,
+            "slideBy" : "1",
+            "autoplaySpeed" : 3000,
+            "autoplayTimeout" : 3000,
+            "autoplayHoverPause" : true,
+            "responsive": {
+                "0": {
+                    "items":2
+                },
+                "480": {
+                    "items":2
+                },
+                "768": {
+                    "items":3
+                },
+                "992": {
+                    "items":4
+                },
+                "1280": {
+                    "items":5,
+                    "nav": true
+                }
+            }
+        }'>
+            {% for f in fb %}
+            {% for e in f.showcase_brand_set.all %}
+            <div class = 'indv-brand-container'>
+            <a href="{% url 'brand' e.brand.name %}" class="brand">
+                {% if e.brand.brand_logo %}
+                <img class = 'indv-img' src="{{e.brand.brand_logo.url}}" alt="{{e.brand.name}}">
+                {% else %}
+                <p>{{e.brand.name}}</p>
+                {% endif %}
+            </a>
+            </div>
+            {% endfor %}
+            {% endfor %}
+        </div><!-- End .owl-carousel -->
+
+</main>
+</body>
+{% endblock %}
+
+{% block script_content %}
+<script src="{% static 'assets/js/jquery.star-rating-svg.js' %}"></script>
+<script src = "{% static 'assets/js/index.js' %}"></script>
+{% endblock %}
+

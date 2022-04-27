@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta-contents %}
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content='Buy Acer, Apple MacBook, Asus, HP, Lenovo, Microsoft, MSI Razer Blade, Dell, ultrabook in Nepal at best price at Matechi'/>
+<meta name="keywords" content='Acer, Apple, Asus, HP, Dell, Lenovo, Alienware, MSI, Fantech, Razerblade, Microsoft'/>
+<meta name="robots" content="INDEX,FOLLOW"/>
+<meta name="format-detection" content="telephone=no"/>
+<title>Register | Matechi</title>
+{% endblock %}
+
+{% block link-content %}
+<link rel="stylesheet" href="assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css">
+<!-- Plugins CSS File -->
+<link rel="stylesheet" href="{% static 'assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css' %}">
+<!-- Plugins CSS File -->
+<link rel="stylesheet" href="{% static 'assets/css/plugins/owl-carousel/owl.carousel.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/plugins/magnific-popup/magnific-popup.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/plugins/jquery.countdown.css' %}">
+<!-- Main CSS File -->
+<!-- Plugins CSS File -->
+<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+<!-- Main CSS File -->
+<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<body>
+    <main class="main">
+        <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+            <div class="container">
+            </div>
+            {% if messages %}
+            {% for message in messages%}
+            <p {% if message.tags %} class = 'alert alert-{{message.tags}} mb-5' {% endif %}>{{message}}</p>
+            {% endfor %}
+            {% endif %}
+            <!-- End .container -->
+        </nav>
+        <!-- End .breadcrumb-nav -->
+
+        <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17" style="background-color: rgb(253, 253, 253);">
+            <div class="container">
+                <div class="form-box">
+                    <div class="form-tab">
+                        <ul class="nav nav-pills nav-fill" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="register-tab-2" data-toggle="tab" href="#register-2" role="tab" aria-controls="register-2" aria-selected="true">Register</a>
+                            </li>
+                        </ul>
+   
+                            <!-- .End .tab-pane -->
+                            <div class="tab-pane fade active show " id="register-2" role="tabpanel" aria-labelledby="register-tab-2">
+                                <form action="" method="post">
+                                    {% csrf_token %}
+
+                                    {% for fm in form %}
+                                        <div class = "form-group mb-3">
+                                            {{fm.label_tag}} {{fm}} <small class = "text-danger" >{{fm.errors|striptags}}</small>
+                                        </div>
+                                    {% endfor %}
+                                    <!-- End .form-group -->
+
+                                    <div class="form-footer">
+                                        <button type="submit" class="btn btn-outline-primary-2">
+                                            <span>SIGN UP</span>
+                                            <i class="icon-long-arrow-right"></i>
+                                        </button>
+                                        <!-- End .custom-checkbox -->
+                                    </div>
+                                    <!-- End .form-footer -->
+                                </form>
+                                <!-- End .form-choice -->
+                            </div>
+                            <!-- .End .tab-pane -->
+                        </div>
+                        <!-- End .tab-content -->
+                    </div>
+                    <!-- End .form-tab -->
+                </div>
+                <!-- End .form-box -->
+            </div>
+            <!-- End .container -->
+        </div>
+        <!-- End .login-page section-bg -->
+    </main>
+    <!-- End .main -->
+
+</body>
+{% endblock %}
+</html>

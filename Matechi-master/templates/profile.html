@@ -1,0 +1,313 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta-contents %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content='Buy Acer, Apple MacBook, Asus, HP, Lenovo, Microsoft, MSI Razer Blade, Dell, ultrabook in Nepal at best price at Matechi'/>
+    <meta name="keywords" content='Acer, Apple, Asus, HP, Dell, Lenovo, Alienware, MSI, Fantech, Razerblade, Microsoft'/>
+    <meta name="robots" content="INDEX,FOLLOW"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <title>My Profile | Dell, HP, Apple MacBook, Acer, Asus, Lenovo, MS</title>
+{% endblock %}
+
+{% block link-content %}
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/profile_order.css' %}">
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<body>
+    <main class="main">
+        <div class="page-header text-center" style="background-image: url('/static/assets/images/backgrounds/profile-header.jpg')">
+            <div class="container">
+                <h1 class="page-title">Welcome {{user|title}}<span>MATECHI</span></h1>
+            </div>
+            <!-- End .container -->
+        </div>
+        <!-- End .page-header -->
+        <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item">Profile</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{user}}</li>
+                </ol>
+                {% if messages %}
+                {% for message in messages%}
+                <p {% if message.tags %} class = 'alert alert-{{message.tags}} mb-5' style = 'color:white;' {% endif %}>{{message}}</p>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <!-- End .container -->
+        </nav>
+        <!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+            <div class="dashboard">
+                <div class="container">
+                    <div class="row">
+                        <aside class="col-md-4 col-lg-3">
+                            <ul class="nav nav-dashboard flex-column mb-3 mb-md-0" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address" aria-selected="false">Profile</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-orders-link" data-toggle="tab" href="#tab-orders" role="tab" aria-controls="tab-orders" aria-selected="false">Ongoing Orders</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tab-previous-orders-link" data-toggle="tab" href="#tab-previous-orders" role="tab" aria-controls="tab-previous-orders" aria-selected="false">All Orders</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">Edit Profile</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'logout' %}">Sign Out</a>
+                                </li>
+                            </ul>
+                        </aside>
+                        <!-- End .col-lg-3 -->
+
+                        <div class="col-md-8 col-lg-9">
+                            <div class="tab-content">
+                                <div class="tab-pane fade" id="tab-account" role="tabpanel" aria-labelledby="tab-account-link">
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        {% for fm in form %}
+                                            <div class = "form-group mb-3">
+                                                {{fm.label_tag}} {{fm}} <small class = "text-danger" >{{fm.errors|striptags}}</small>
+                                            </div>
+                                        {% endfor %}
+                                        <!-- End .form-group -->
+    
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-outline-primary-2">
+                                                <span>SUBMIT CHANGES</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+                                        </div>
+                                    </form>        
+                                </div>
+                                <!-- .End .tab-pane -->
+
+                                <!------------Order listed with summary-------------------->
+
+                                <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
+                                    {% if order %}
+                                    {% for o in order %}
+                                    <div class = 'order-container' {% if forloop.first %} style='margin-top:0;' {% endif %}'>
+                                        <div class = 'order-header'>
+                                            <div class = 'top-header'>
+                                                <h5><b>ORDER &nbsp;</b>#{{o.id}}</h5>
+                                            </div>
+                                            <div class = 'bottom-header'>
+                                                <p>Order Placed on <b>{{o.ordered_date}}</b></p>
+                                            </div>
+                                        </div>
+
+                                        {% if o.status == 'Cancelled' %}
+                                        
+                                        <div class = 'cancel-div'>
+                                            <p class = 'cancel-heading'>ORDER CANCELED</p>
+                                            <p class = 'cancel-reason'>{{o.cancel_reason|linebreaksbr}}</p>
+                                            <a href = "{% url 'invoice' o.id %}" target = '_blank'>Order Details</a>
+                                        </div>
+
+                                        {% else %}
+                                        <div class = 'timeline-container'>
+                                            <div id="timeline-wrap">
+                                                <div id="timeline"></div>
+                                                <!-- This is the individual marker-->
+                                                <div class="marker mfirst timeline-icon one" {% if o.status == 'Accepted'  or o.status == 'Processing' or o.status == 'Packed' or o.status == 'Shipped' %} style="background-color: #3e4f88;" {% endif %}>
+                                                    <i class="fa fa-credit-card"></i>
+                                                    <p class = 'timeline-text'>Accepted</p>
+                                                </div>
+                                                <!-- / marker -->
+                                              
+                                                <!-- This is the individual marker-->
+                                                <div class="marker m2 timeline-icon two"  {% if o.status == 'Processing' or o.status == 'Packed' or o.status == 'Shipped' %} style="background-color: #3e4f88;" {% endif %}>
+                                                    <i class="fa fa-exchange"></i>
+                                                    <p class = 'timeline-text'>Processing</p>
+                                                </div>
+                                                <!-- / marker -->
+                                                
+                                                <!-- This is the individual marker-->
+                                                <div class="marker m3 timeline-icon three"  {% if o.status == 'Packed' or o.status == 'Shipped' %} style="background-color: #3e4f88;" {% endif %}>
+                                                  <i class="fa fa-gift"></i>
+                                                  <p class = 'timeline-text'>Packed</p>
+                                                </div>
+                                                <!-- / marker -->
+                                              
+                                                <!-- This is the individual marker-->
+                                                <div class="marker mlast timeline-icon four"  {% if  o.status == 'Shipped' %} style="background-color: #3e4f88;" {% endif %}>
+                                                  <i class="fa fa-truck"></i>
+                                                  <p class = 'timeline-text'>Shipped</p>
+                                                </div>
+                                                <!-- / marker -->
+                                            </div>
+                                        </div>
+
+
+                                        {% for entry in o.orderitem_set.all %}
+                                        <div class = 'order-items-table'>
+                                                <div>
+                                                    <img class='inside-image' src ='{{entry.product.thumbnail.url}}'>
+                                                </div>
+                                                <div>
+                                                    <td>{{entry.product}}</td>
+                                                </div>
+                                                <div>
+                                                    X
+                                                </div>
+                                                <div>
+                                                    <td>{{entry.quantity}}</td> 
+                                                </div>
+                                                <div>
+                                                    <td>Rs : {{entry.product.current_price}}</td>
+                                                    
+                                                </div>
+
+                                        </div>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                    {% endfor %}
+                                    {% else %}
+                                    <div class="col">
+                                        <div class = 'row justify-content-center'>
+                                            <h1 style ='font-family: Cinzel Decorative; text-align:center;'>No ongoing orders.</h1>
+                                            <p style ='font-family: Cabin; text-align:center;'>This is where you can see your pending orders when you first place your order. You will be able to see your order items and the status of your order here until it is completed or canceled. </p>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+
+                                <!--------------------------------End Order--------------------------->
+                                <!-- .End .tab-pane -->
+
+                                <div class="tab-pane fade" id="tab-previous-orders" role="tabpanel" aria-labelledby="tab-previous-orders-link">
+                                    {% if previous_orders %}
+                                    <div class="table-wrap">
+                                        <table class="table table-bordered" id = 'tabledata'>
+                                          <thead>
+                                            <tr>
+                                              <th>Order</th>
+                                              <th>Ordered Date</th>
+                                              <th>Invoice</th>
+                                              <th>Status</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                              {% for p in previous_orders %}
+                                              <tr>
+                                                <td>Order {{p.id}}</td>
+                                                <td>{{p.ordered_date}}</td>
+                                                <td><a target = '_blank' href = "{% url 'invoice' p.id %}">Click Here</a></td>
+                                                {% if p.complete == True %}
+                                                <td>Completed</td>
+                                                {% else %}
+                                                <td>{{p.status}}</td>
+                                                {% endif %}
+                                              </tr>
+                                              {% endfor %}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    {% else %}
+                                    <div class="col">
+                                        <div class = 'row justify-content-center'>
+                                            <h1 style ='font-family: Cinzel Decorative; text-align:center;'>No orders.</h1>
+                                            <p style ='font-family: Cabin; text-align:center;'>It seems you have not made any purchase with us yet. Hence, you are seeing this message. After one or more orders have been placed, you will be able to view all the orders, their status and their respective invoices. Happy Shopping !!! </p>
+                                        </div>
+                                    </div>
+                                    {% endif %}  
+                
+
+
+                                </div>
+
+                                <div class="tab-pane fade show active" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
+                                    <p>The following addresses will be used on the checkout page by default.</p>
+
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="card card-dashboard">
+                                                <div class="card-body">
+                                                    <h3 class="card-title">Billing Address</h3>
+                                                    <!-- End .card-title -->
+                                                    {% for b in bill_add %}
+
+                                                    <p>Name : {{b.first_name|title}} {{b.last_name|title}} <br>
+                                                       Address : {{b.locality}}, {{b.city|title}} <br>
+                                                       Phone : {{b.phone}} <br>
+
+                                                       {% if b.zipcode %}
+                                                       ZipCode : {{b.zipcode}} <br>
+                                                       {% endif %}
+                                                       Province : {{b.province|title}} <br>
+
+                                                       {% if b.customer_pan_number%}
+                                                       Customer pan number : {{b.customer_pan_number}} <br>
+                                                       {% endif %}
+
+                                                       {% if b.alternative_phone_number %}
+                                                       Alternative Phone Number : {{b.alternative_phone_number}} <br>
+                                                       {% endif %}
+
+
+                                                    <a href="" id='profile-edit-btn'>Edit <i class="icon-edit"></i></a></p>
+                                                    {% endfor %}
+                                                </div>
+                                                <!-- End .card-body -->
+                                            </div>
+                                            <!-- End .card-dashboard -->
+                                        </div>
+                                        <!-- End .col-lg-6 -->
+
+                                        <div class="col-lg-6">
+                                            <div class="card card-dashboard">
+                                                <!-- End .card-body -->
+                                            </div>
+                                            <!-- End .card-dashboard -->
+                                        </div>
+                                        <!-- End .col-lg-6 -->
+                                    </div>
+                                    <!-- End .row -->
+                                </div>
+                                <!-- .End .tab-pane -->
+
+
+                            </div>
+                        </div>
+                        <!-- End .col-lg-9 -->
+                    </div>
+                    <!-- End .row -->
+                </div>
+                <!-- End .container -->
+            </div>
+            <!-- End .dashboard -->
+        </div>
+        <!-- End .page-content -->
+    </main>
+    <!-- End .main -->
+
+</body>
+{% endblock %}
+
+{% block script_content %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src = "{% static  'assets/js/profile.js' %}"></script>
+
+    <!-- Page level plugin JavaScript-->
+    <script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+{% endblock %}

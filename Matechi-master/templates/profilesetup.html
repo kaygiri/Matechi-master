@@ -1,0 +1,109 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content='Buy Acer, Apple MacBook, Asus, HP, Lenovo, Microsoft, MSI Razer Blade, Dell, ultrabook in Nepal at best price at Matechi'/>
+    <meta name="keywords" content='Acer, Apple, Asus, HP, Dell, Lenovo, Alienware, MSI, Fantech, Razerblade, Microsoft'/>
+    <meta name="robots" content="INDEX,FOLLOW"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <title>Profile Setup | Dell, HP, Apple MacBook, Acer, Asus, Lenovo, MS</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css%22%3E">
+    <link rel="stylesheet" href="{% static 'assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css'%}">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/owl-carousel/owl.carousel.css'%}">
+    <link rel="stylesheet " href="{% static 'assets/css/plugins/magnific-popup/magnific-popup.css'%} ">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/jquery.countdown.css'%}">
+    <!-- Main CSS File -->
+    <link rel="stylesheet " href="{% static 'assets/css/style.css'%} ">
+    <link rel="stylesheet" href="{% static 'assets/css/skins/skin-demo-3.css'%}">
+    <link rel="stylesheet " href="{% static 'assets/css/demos/demo-3.css'%} ">
+
+    <link rel="stylesheet " href="{% static 'assets/css/form.css'%} ">
+</head>
+
+<body style="background-image: url('{% static 'assets/images/profilesetup-bg.jpg' %}');">
+    <div class="container">
+        <img src="{% static 'assets/images/footer-bg.png' %}" width="200" style="margin: 0 auto;"><br>
+        <h3 align="center">Setup My Profile</h3><br>
+        <div class="form-box">
+
+
+            <div class="tab-content" id="tab-content-5">
+                <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="profile-setup-tab">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group col-md-6 mb-0">
+                                {{ form.first_name|as_crispy_field }}
+                            </div>
+                            <div class="form-group col-md-6 mb-0">
+                                {{ form.last_name|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-6 mb-0">
+                            {{ form.locality|as_crispy_field }}
+                          </div>
+                          <div class="form-group col-md-6 mb-0">
+                            {{ form.city|as_crispy_field }}
+                          </div>
+                        </div>
+                        <div class="form-row">
+                            {{ form.province|as_crispy_field }}
+                        </div>
+                        <div class="form-row">
+                            {{ form.zipcode|as_crispy_field }}
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6 mb-0">
+                                {{ form.phone|as_crispy_field }}
+                            </div>
+                            <div class="form-group col-md-6 mb-0">
+                                {{ form.alternative_phone_number|as_crispy_field }}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            {{ form.customer_pan_number|as_crispy_field }}
+                        </div>
+                    <div class="form-choice" align="center">
+                        <button type="submit" class="btn btn-outline-info">
+                            <span>Next</span>
+                        </button>
+                    </div>
+                </div>
+            </form>              
+                   <!-- .End .tab-pane -->
+                <!-- End .form-choice -->
+            </div>
+            <!-- End .tab-content -->
+        </div>
+        <!-- End .form-tab -->
+    </div>
+    <!-- End .form-box -->
+
+    </div>
+    <!-- End .Container -->
+</body>
+    <!-- Plugins JS File -->
+    <script src="{% static 'assets/js/jquery.min.js'%}"></script>
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js'%}"></script>
+    <script src="{% static 'assets/js/jquery.hoverIntent.min.js'%}"></script>
+    <script src="{% static 'assets/js/jquery.waypoints.min.js'%}"></script>
+    <script src="{% static 'assets/js/superfish.min.js'%}"></script>
+    <script src="{% static 'assets/js/owl.carousel.min.js'%}"></script>
+    <script src="{% static 'assets/js/jquery.plugin.min.js'%}"></script>
+    <script src="{% static 'assets/js/jquery.magnific-popup.min.js'%}"></script>
+    <script src="{% static 'assets/js/jquery.countdown.min.js'%}"></script>
+    <!-- Main JS File -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <script src="{% static 'assets/js/demos/demo-3.js' %}"></script>
+    <script src="{% static 'lib/jquery.lazyload/jquery.lazyload.min.js' %}"></script>
+    <script src="{% static 'lib/isotope/jquery.isotope.min.js' %}"></script>
+
+</html>

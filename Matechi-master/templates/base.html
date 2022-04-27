@@ -1,0 +1,498 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block meta-contents %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% endblock %}
+
+    {% block link-content %}
+    {% endblock %}
+    <link rel = "icon" href = "{% static 'assets/images/logos/logo-for-tab.png'%}" type = "image/x-icon">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+    <link rel="stylesheet " href="{% static 'assets/css/style.css'%} ">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/owl-carousel/owl.carousel.css'%}">
+    <link rel="stylesheet " href="{% static 'assets/css/plugins/magnific-popup/magnific-popup.css'%} ">
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/jquery.countdown.css'%}">
+
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <!-- Main CSS File -->
+
+    <link rel = "stylesheet" href = "{% static 'assets/css/dropdown.css' %}">
+    <link rel = "stylesheet" href = "{% static 'assets/css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
+    <script type = 'text/javascript'>
+        var user = '{{request.user}}'
+
+        function getToken(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getToken('csrftoken');
+    </script>
+
+    <style>
+        .dropdown-item:focus{
+            background-color: white !important;
+            color: black  !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="background-color: #1A1A1D; text-align: right;">
+        <p style="color:white !important; margin-right : 85px; white-space: nowrap !important;">Contact : +977 9863473726 / 9863473726</p>
+    </div>
+    <div class="page-wrapper">
+        <header class="header header-intro-clearance header-3">
+            <div class="header-middle">
+                <div class="container">
+                    <div class="header-left">
+                        <button class="mobile-menu-toggler">
+                            <span class="sr-only">Toggle mobile menu</span>
+                            <i class="icon-bars"></i>
+                        </button>
+
+                        <a href="{% url 'home' %}" class="logo">
+                            <img src="{% static 'assets/images/logos/orange logo.png' %}" alt="Matechi Logo" class = 'header-logo'>
+                        </a>
+                    </div>
+                    <!-- End .header-left -->
+
+                    <div class="header-center">
+                        <div id = 'search-header'>
+                                <input class="form-control" id = 'search' type="search" placeholder="Search" aria-label="Search">
+                                <button id = 'search-btn' type="submit">Search</button>
+                        </div>
+                        <!-- End .header-search -->
+                    </div>
+
+                    <div class="header-right">
+                        {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a style = 'color:white;' class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{user|title}}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" style="height: auto;">
+                              <a href="{% url 'profile' %}" style="font-size: 15px;" class="dropdown-item" href="#"><i class="fas fa-cog"></i>&nbsp; Profile</a>
+                              <a href = "{% url 'logout' %}" style="font-size: 15px;" class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i>&nbsp; Logout</a>
+                            </div>
+                          </li>
+                          {% else %}
+
+                          <a class= 'logreg' href ="{% url 'login' %}">Login</a>
+                          <div id='vertical-line-sep'></div>
+                          <a class = 'logreg' href = "{% url 'register' %}">Register</a>
+                          {% endif %}
+
+                         
+
+                        <div class="dropdown cart-dropdown">
+                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                <div class="icon">
+                                    <i style="color:white" class="icon-shopping-cart"></i>
+                                    {% if user.is_authenticated %}
+                                    <span class="cart-count">{{total_quantity}}</span>
+                                    {% endif %}
+                                </div>
+                            </a>
+
+                            {% if cart_items %}
+
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <div class="dropdown-cart-products">
+                                    {% for c in cart_items %}
+                                    <div class = 'product-listview'>
+                                        <div class = 'left-image-div'>
+                                            <img class = 'left-image' src = "{{c.product.thumbnail.url}}">
+                                        </div>
+
+                                        <div class = 'inside-listview'>
+                                            <div class = 'cart-product-name'>
+                                              <h6>{{c.product.product_name}}</h6>
+                                            </div>
+
+                                            <div class = 'horizontal-container'>
+                                                <div> {{c.product.current_price}} </div>
+                                                &nbsp;
+                                                x
+                                                &nbsp;
+                                                <div>{{c.quantity}}</div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    {% endfor %}
+
+                                </div>
+                                <!-- End .cart-product -->
+
+                                <div class="dropdown-cart-total">
+                                    <span style="text-transform: capitalize;">Subtotal : </span>
+
+                                    <span class="cart-total-price" style="text-transform:capitalize">NPR  {{subtotal_price}}</span>
+                                </div>
+                                <!-- End .dropdown-cart-total -->
+
+                                <div class="dropdown-cart-action">
+                                    <a href="{% url 'cart' %}" class="btn btn-primary">View Cart</a>
+                                    <a href="{% url 'checkout' %}" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
+                                </div>
+                                <!-- End .dropdown-cart-total -->
+                            </div>
+                            <!-- End .dropdown-menu -->
+                            {% endif %}
+                        </div>
+                        <!-- End .cart-dropdown -->
+                    </div>
+                    <!-- End .header-right -->
+                </div>
+                <!-- End .container -->
+            </div>
+            <!-- End .header-middle -->
+
+            <div class="header-bottom sticky-header">
+                <div class="container" id="category-bar">
+                    <div class="header-left">
+                        <div class="dropdown category-dropdown">
+                            <icon style = "color: black; margin-right:10px;" class="fas fa-bars"></icon> <a href="#" class = 'all-cat-link' role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Browse Categories">
+                                All Categories
+                            </a>
+
+                            <div class="dropdown-menu">
+                                <nav class="side-nav">
+                                    <ul class="menu-vertical">
+
+                                        <li class="megamenu-container">
+                                            <a class="" href="{% url 'custom-pc' %}">Custom PC</a>
+                                          </li>
+
+                                          <li class="megamenu-container">
+                                            <a class="" href="{% url 'brand-mall' %}">Brand Mall</a>
+                                          </li>
+                                        {% for c in category %}
+                                        <li class="megamenu-container">
+                                            <a class="" href="{% url 'category' c.slug %}">{{c.name}}</a>
+                                              <div class="megamenu">
+                                                  <div class="menu-title" style="text-align: center;">{{c.name}}</div>
+                                                  <div class="row no-gutters">
+                                                      <div class="col-md-8">
+                                                          <div class="menu-col">
+                                                              <div class="row">
+                                                                  <div class="col-md-6">
+                                                                      <div class="menu-title">Most Popular</div>
+                                                                      <!-- End .menu-title -->
+                                                                      <ul>
+                                                                          {% for e in c.subcategory_set.all %}
+                                                                          {% if forloop.counter < 10 %}
+                                                                          <li><a href="{% url 'subcategory' e.name %}">{{e.name}}</a></li>
+                                                                          {% endif %}
+                                                                          {% endfor %}
+                                                                      </ul>
+  
+                                                                  </div>
+                                                                  <!-- End .col-md-6 -->
+  
+                                                                  <div class="col-md-6">
+                                                                      <div class="menu-title">Top Brands </div>
+                                                                      <!-- End .menu-title -->
+                                                                      <ul>
+                                                                        {% for e in c.brands_set.all %}
+                                                                        {% if forloop.counter < 10 %}
+                                                                        <li><a href="{% url 'brand' e.name %}">{{e.name}}</a></li>
+                                                                        {% endif %}
+                                                                        {% endfor %}
+                                                                      </ul>
+                                                                  </div>
+                                                                  <!-- End .col-md-6 -->
+                                                              </div>
+                                                              <!-- End .row -->
+                                                          </div>
+                                                          <!-- End .menu-col -->
+                                                      </div>
+                                                      <!-- End .col-md-8 -->
+  
+                                                      <div class="col">
+                                                          <div class="banner">
+                                                              {% for b in c.bannerimage_set.all %}
+                                                                {% if b.link %}
+                                                                <a href={{b.link}} class="banner banner-menu">
+                                                                {% else %}
+                                                                <a href="{{b.image.url}}" class="banner banner-menu">
+                                                                {% endif %}
+                                                                <img src="{{b.image.url}}" alt="Banner" class = 'banner-image-dropdown'>
+                                                            </a>
+                                                              {% endfor %}
+                                                          </div>
+                                                          <!-- End .banner banner-overlay -->
+                                                      </div>
+                                                      <!-- End .col-md-4 -->
+                                                  </div>
+                                                  <!-- End .row -->
+                                              </div>
+                                              <!-- End .megamenu -->
+                                          </li>
+                                        {% endfor %}
+  
+                                        </li>
+                                    </ul>
+                                    <!-- End .menu-vertical -->
+                                </nav>
+                                <!-- End .side-nav -->
+                            </div>
+                            <!-- End .dropdown-menu -->
+                        </div>
+                        <!-- End .category-dropdown -->
+                    </div>
+                    <!-- End .header-left -->
+
+                    <div class="header">
+                        <nav class="nav">
+                            <ul class="menu">
+                                <li>
+                                    <a href="{% url 'custom-pc' %}">Custom PC</a>
+                                </li>
+                                <li class="megamenu-container header-nav-bar">
+                                    <a href="{% url 'brand-mall' %}">Brand Mall</a>
+                                </li>
+
+                                {% for c in category %}
+                                {% if forloop.counter < 8 %}
+                                <li class="megamenu-container header-nav-bar">
+                                    <a href="{% url 'category' c.slug %}" class="">{{c.name}}</a>
+
+                                    <div class="megamenu megamenu-md">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-6">
+                                                <div class="menu-col">
+                                                    <div class="row">
+                                                        <div class="col-md-5">
+                                                            <div class="menu-title">Top Categories</div>
+                                                            <!-- End .menu-title -->
+                                                            <div class = 'category-list'>
+                                                                {% for s in c.subcategory_set.all %}
+                                                                {% if forloop.counter < 10 %}
+                                                                <p><a href="{% url 'subcategory' s.name %}">{{s.name}}</a></p>
+                                                                {% endif %}
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                        <!-- End .col-md-5 -->
+
+                                                        <div class="col-md-7" >
+                                                            <div class="menu-title">Top Brands</div>
+                                                            <!-- End .menu-title -->
+                                                            <div class="portfolio-container" data-layout="fitRows">
+
+                                                                {% for b in c.brands_set.all %}
+                                                                {% if forloop.counter < 10 %}
+                                                                <div class="portfolio-item men col-sm-6 col-lg-4">
+                                                                    <div class="portfolio portfolio-overlay">
+                                                                        <figure class="portfolio-media">
+                                                                            <a href="{% url 'brand' b.name %}">
+                                                                                {% if b.brand_logo %}
+                                                                                <img src="{{b.brand_logo.url}}" alt="item" class = 'brand-logo-nav'>
+                                                                                {% else %}
+                                                                                <p style = 'background-color: white;'>{{b.name}}</p>
+                                                                                {% endif %}
+                                                                            </a>
+                                                                        </figure>
+                                                                    </div>
+                                                                    <!-- End .portfolio portfolio-overlay -->
+                                                                </div>
+                                                                <!-- End .portfolio-item -->
+                                                                {% endif %}
+                                                                {% endfor %}
+                                
+                                                            </div>
+                                                            <!-- End .portfolio-container -->
+                                                        </div>
+                                                        <!-- End .col-md-4 -->
+                                                    </div>
+                                                    <!-- End .row -->
+                                                </div>
+                                                <!-- End .menu-col -->
+                                            </div>
+                                            <!-- End .col-md-8 -->
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            {% for b in c.bannerimage_set.all %}
+                                            <div class="">
+                                                <div class="navbar-dropdown-banner">
+                                                    {% if b.link %}
+                                                    <a href="{{b.link}}" class="">
+                                                    {% endif %}
+                                                        <img src="{{b.image.url}}" alt="Banner" class = 'navbar-banner-img'>
+                                                    </a>
+                                                </div>
+                                                <!-- End .banner banner-overlay -->
+                                            </div>
+                                            <!-- End .col-md-2 -->
+                                            {% endfor %}
+                                        </div>
+                                        <!-- End .row -->
+                                    </div>
+                                    <!-- End .megamenu megamenu-md -->
+                                </li>
+                                {% endif %}
+                                {% endfor %}
+
+                            </ul>
+                            <!-- End .menu -->
+                        </nav>
+                        <!-- End .main-nav -->
+                    </div>
+                    <!-- End .header-center -->
+
+
+                </div>
+                <!-- End .container -->
+            </div>
+            <!-- End .header-bottom -->
+        </header>
+        <!-- End .header -->
+
+        {% block content %}
+        {% endblock %}
+
+
+        <footer class="base-footer">
+            <div class="footer-top">
+                <div class = 'footer-logo-container'>
+                    <img class = 'footer-logo' src = "{% static 'assets/images/logos/orange logo.png' %}">
+                </div>
+
+                {% for c in category %}
+                {% if forloop.counter < 5 %}
+                <div class = 'quick-links'>
+                    <a href = '{% url 'category' c.slug %}'><h5>{{c.name}}</h5></a>
+                    {% for e in c.subcategory_set.all %}
+                    {% if forloop.counter < 7 %}
+                    <a href = '{% url 'subcategory' e.name %}'><p>{{e.name}}</p></a>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endfor %}
+                </div>
+                
+            <div class="footer-bottom">
+                <div class="container">
+                    <p id ="footer-copyright" style="margin:0 auto; color: white !important;">Copyright © 2021 Matechi. All Rights Reserved.</p>
+                    <!-- End .footer-copyright -->
+                </div>
+                <!-- End .container -->
+            </div>
+            <!-- End .footer-bottom -->
+        </footer>
+        <!-- End .footer -->
+    </div>
+    <!-- End .page-wrapper -->
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div>
+    <!-- End .mobil-menu-overlay -->
+
+    <div class="mobile-menu-container">
+        <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+            <div class="mobile-search">
+                <label for="mobile-search" class="sr-only">Search</label>
+                <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search" required>
+                <button class="btn btn-primary" id ='search-button2' type="submit"><i class="icon-search"></i></button>
+            </div>
+
+            <ul class="nav nav-pills-mobile nav-border-anim" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="mobile-menu-link" data-toggle="tab" href="#mobile-menu-tab" role="tab" aria-controls="mobile-menu-tab" aria-selected="true">Menu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="mobile-cats-link" data-toggle="tab" href="#mobile-cats-tab" role="tab" aria-controls="mobile-cats-tab" aria-selected="false">Categories</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="mobile-menu-tab" role="tabpanel" aria-labelledby="mobile-menu-link">
+                    <nav class="mobile-nav">
+                        <ul class="mobile-menu">
+                            <li>
+                                <a href="{% url 'custom-pc' %}">Custom PC</a>
+
+                            </li>
+                            <li>
+                                <a href="{% url 'brand-mall' %}">Brand Malls</a>
+                            </li>
+                            {% for c in category %}
+                            <li>
+                                <a href="{% url 'category' c.slug %}">{{c.name}}</a>
+                                <ul>
+                                    {% for s in c.subcategory_set.all %}
+                                    <li><a href="{% url 'subcategory' s.name %}">{{s.name}}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                    <!-- End .mobile-nav -->
+                </div>
+                <!-- .End .tab-pane -->
+                <div class="tab-pane fade" id="mobile-cats-tab" role="tabpanel" aria-labelledby="mobile-cats-link">
+                    <nav class="mobile-cats-nav">
+                        <ul class="mobile-cats-menu">
+                            {% for c in category %}
+                            <li class="item-lead"><a href="{% url 'custom-pc' %}">Custom PC</a></li>
+                            <li class="item-lead"><a href="{% url 'brand-mall' %}">Brand Mall</a></li>
+                            <li class="item-lead"><a href="{% url 'category' c.slug %}">{{c.name}}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <!-- End .mobile-cats-menu -->
+                    </nav>
+                    <!-- End .mobile-cats-nav -->
+                </div>
+                <!-- .End .tab-pane -->
+            </div>
+            <!-- End .tab-content -->
+            <!-- End .social-icons -->
+        </div>
+        <!-- End .mobile-menu-wrapper -->
+    </div>
+    <!-- End .mobile-menu-container -->
+
+
+    <!-- Plugins JS File -->
+    <script src="{% static 'assets/js/jquery.min.js'%}"></script>
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js'%}"></script>
+    <script src="{% static 'assets/js/jquery.hoverIntent.min.js'%}"></script>
+    <script src="{% static 'assets/js/jquery.waypoints.min.js'%}"></script>
+    <script src="{% static 'assets/js/superfish.min.js'%}"></script>
+    <script src="{% static 'assets/js/owl.carousel.min.js'%}"></script>
+    <script src="{% static 'assets/js/jquery.plugin.min.js'%}"></script>
+    <script src="{% static 'assets/js/jquery.magnific-popup.min.js'%}"></script>
+    <script src="{% static 'assets/js/jquery.countdown.min.js'%}"></script>
+    <!-- Main JS File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <script src="{% static 'lib/jquery.lazyload/jquery.lazyload.min.js' %}"></script>
+    <script src="{% static 'lib/isotope/jquery.isotope.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap-input-spinner.js'%}"></script>
+
+    {% block script_content %}
+    {% endblock %}
+</body>
+</html>

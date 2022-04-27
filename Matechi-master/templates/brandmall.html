@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta-contents %}
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content='Buy Acer, Apple MacBook, Asus, HP, Lenovo, Microsoft, MSI Razer Blade, Dell, ultrabook in Nepal at best price at Matechi'/>
+<meta name="keywords" content='Acer, Apple, Asus, HP, Dell, Lenovo, Alienware, MSI, Fantech, Razerblade, Microsoft'/>
+<meta name="robots" content="INDEX,FOLLOW"/>
+<meta name="format-detection" content="telephone=no"/>
+<title>The Nepal Brand Mall | Dell, HP, Apple MacBook, Acer, Asus, Lenovo, MS</title>
+{% endblock %}
+
+{% block link-content %}
+<link rel="stylesheet" href="{% static 'assets/css/brand_mall.css'%}">
+{% endblock %}
+
+{% block content %}
+<div class = 'header-container'>
+    <img src = "{% static 'assets/images/backgrounds/brand-mall-header.jpg' %}">
+    <p>Brand Mall</p>
+</div>
+
+<div class = 'heading-mall'>
+    <p>SHOP ALL BRANDS</p>
+</div>
+<div class = 'custom-col'>
+    <div class = 'custom-row'>
+        {% for b in brands %}
+        <div class = 'brand-logo-container'>
+            {% if b.brand_logo %}
+            <a href = "{% url 'brand' b.slug %}"><img src = {{b.brand_logo.url}}></a>
+            {% else %}
+            <p>{{b.name}}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

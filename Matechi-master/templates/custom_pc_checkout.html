@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block meta-contents %}
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content='Buy Acer, Apple MacBook, Asus, HP, Lenovo, Microsoft, MSI Razer Blade, Dell, ultrabook in Nepal at best price at Matechi'/>
+<meta name="keywords" content='Acer, Apple, Asus, HP, Dell, Lenovo, Alienware, MSI, Fantech, Razerblade, Microsoft'/>
+<meta name="robots" content="INDEX,FOLLOW"/>
+<meta name="format-detection" content="telephone=no"/>
+<title>Matechi Checkout | Dell, HP, Apple MacBook, Acer, Asus, Lenovo, MS</title>
+{% endblock %}
+
+{% block link-content %}
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css'%}">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-content">
+    <div class="alert alert-danger" style='display:none;'>
+        <strong>Invalid Input!</strong> Make sure that the input boxes with * sign have been filled correctly.
+    </div>
+    <div class="alert alert-danger" id ='coupon-warning' style='display: none;'>
+        <strong>Coupon is not valid !</strong>&nbsp; Make sure that the coupon code you placed is correct. If not check the validity of the input. You can leave the coupon code empty to complete checkout.
+    </div>
+    {% if form %}
+    <div class="checkout">
+        <div class="container">
+            <div class="checkout-discount">
+                <form action="#">
+                    <input type="text" class="form-control" required id="checkout-discount-input">
+                    <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter the code </span></label>
+                </form>
+            </div>
+            <!-- End .checkout-discount -->
+                <div class="row">
+                    <div class="col-lg-9 border">
+                        <h2 class="checkout-title">Billing Address</h2>
+                        <!-- End .checkout-title -->
+                        <form>
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                    {{ form.first_name|as_crispy_field }}
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                    {{ form.last_name|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="form-row">
+                              <div class="form-group col-md-6 mb-0">
+                                {{ form.locality|as_crispy_field }}
+                              </div>
+                              <div class="form-group col-md-6 mb-0">
+                                {{ form.city|as_crispy_field }}
+                              </div>
+                            </div>
+                            <div class="form-row">
+                                {{ form.province|as_crispy_field }}
+                            </div>
+                            <div class="form-row">
+                                {{ form.zipcode|as_crispy_field }}
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                    {{ form.phone|as_crispy_field }}
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                    {{ form.alternative_phone_number|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                {{ form.customer_pan_number|as_crispy_field }}
+                            </div>
+                            <!-- End .form-group -->
+                        </form>
+                    </div>
+                    <!-- End .col-lg-9 -->
+                    <aside class="col-lg-3">
+                        <div class="summary">
+                            <h3 class="summary-title">Your Order</h3>
+                            <!-- End .summary-title -->
+
+                            <table class="table table-summary">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id = 'product_list'>
+
+                                    <!-- End .summary-total -->
+                                </tbody>
+
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                            <!-- End .table table-summary -->
+
+                            <div class="accordion-summary" id="accordion-payment">
+                                <div class="card">
+                                    <div class="card-header" id="heading-1">
+                                        <h2 class="card-title">
+                                            <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1" class = 'payment-method' data-name ='Direct bank transfer'>
+										                    Direct bank transfer
+										                </a>
+                                        </h2>
+                                    </div>
+                                    <!-- End .card-header -->
+                                    <div id="collapse-1" class="collapse show" aria-labelledby="heading-1" data-parent="#accordion-payment">
+                                        <div class="card-body">
+                                            Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
+                                        </div>
+                                        <!-- End .card-body -->
+                                    </div>
+                                    <!-- End .collapse -->
+                                </div>
+                                <!-- End .card -->
+
+                                <div class="card">
+                                    <div class="card-header" id="heading-3">
+                                        <h2 class="card-title">
+                                            <a class="collapsed payment-method" role="button" data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3" data-name ='Cash on delivery'>
+										                    Cash on delivery
+										                </a>
+                                        </h2>
+                                    </div>
+                                    <!-- End .card-header -->
+                                    <div id="collapse-3" class="collapse" aria-labelledby="heading-3" data-parent="#accordion-payment">
+                                    </div>
+                                    <!-- End .collapse -->
+                                </div>
+                                <!-- End .card -->
+                            </div>
+                            <!-- End .accordion -->
+                            <button style = 'margin-left: 50px;' class="btn btn-outline-info" id = 'place-order-btn'>
+                                Place Order</button>
+                        </div>
+                        <!-- End .summary -->
+                        
+                    </aside>
+                    <!-- End .col-lg-3 -->
+
+                    <div class="col-lg-9 border">
+                        <h2 class="checkout-title">Shipping Address</h2>
+                        <!-- End .checkout-title -->
+                            <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                    {{ shipform.first_name|as_crispy_field }}
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                    {{ shipform.last_name|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="form-row">
+                              <div class="form-group col-md-6 mb-0">
+                                {{ shipform.locality|as_crispy_field }}
+                              </div>
+                              <div class="form-group col-md-6 mb-0">
+                                {{ shipform.city|as_crispy_field }}
+                              </div>
+                            </div>
+                            <div class="form-row">
+                                {{ shipform.province|as_crispy_field }}
+                            </div>
+                            <div class="form-row">
+                                {{ shipform.zipcode|as_crispy_field }}
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                    {{ shipform.phone|as_crispy_field }}
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                    {{ shipform.alternative_phone_number|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                {{ shipform.pickup_address|as_crispy_field }}
+                            </div>
+                            <div class="form-row">
+                                {{ shipform.special_notes|as_crispy_field }}
+                            </div>
+                    </div>
+                </div>
+                <!-- End .row -->
+        </div>
+        <!-- End .container -->
+    </div>
+    <!-- End .checkout -->
+    {% else %}
+    <div class="container-fluid mt-100">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body cart">
+                        <div class="col-sm-12 empty-cart-cls text-center"> <img style = 'margin: 0 auto;' id='empty-cart' src="https://i.imgur.com/dCdflKN.png">
+                            <h3><strong>Your Cart is Empty</strong></h3>
+                            <h4>Add something to continue to checkout  :)</h4> <a href="#" class="btn btn-outline-info cart-btn-transform m-3" data-abc="true">Continue shopping</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif%}
+</div>
+<!-- End .page-content -->
+
+
+
+
+</body>
+
+{% endblock %}
+
+{% block script_content %}
+<script src ="{% static 'assets/js/custom_pc_checkout.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,461 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta-contents %}
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content='Buy Acer, Apple MacBook, Asus, HP, Lenovo, Microsoft, MSI Razer Blade, Dell, ultrabook in Nepal at best price at Matechi'/>
+<meta name="keywords" content='Acer, Apple, Asus, HP, Dell, Lenovo, Alienware, MSI, Fantech, Razerblade, Microsoft'/>
+<meta name="robots" content="INDEX,FOLLOW"/>
+<meta name="format-detection" content="telephone=no"/>
+<title>Build your own PC | Dell, HP, Apple MacBook, Acer, Asus, Lenovo, MS</title>
+{% endblock %}
+
+{% block link-content %}
+<!-- Plugins CSS File -->
+<!-- jQuery 1.8 or later, 33 KB -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<!-- Fotorama from CDNJS, 19 KB -->
+<link  href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/star-rating-svg.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/plugins/owl-carousel/owl.carousel.css' %}">
+<!-- Main CSS File -->
+<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+<link rel="stylesheet" href="{% static 'assets/css/detailed_product.css' %}">
+{% endblock %}
+
+{% block content%}
+
+<!--- Success modal --->
+<!-- Modal -->
+<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add to Cart</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            This item has been successfully added to the cart !!! <br>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<main>
+    <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+        <div class="container d-flex align-items-center">
+            <ol class="breadcrumb">
+                {% for p in product %}
+                {% if forloop.first %}
+                <li class="breadcrumb-item"><a href="{% url 'category' p.category %}">{{p.category}}</a></li></li>
+                <li class="breadcrumb-item" aria-current="page"><a href="{% url 'subcategory' p.subcategory %}">{{p.subcategory}}</a></li>
+                <li class = 'breadcrumb-item active'>{{p.product_name}}</li>
+                {% endif %}
+                {% endfor %}
+            </ol>
+        </div>
+    </nav>
+
+    <div class="page-content">
+        <div class="container">
+            <div class="product-details-top mb-2">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="product-gallery product-gallery-vertical">
+                            <div class="row">
+                                <div class="container mt-5">
+                                    <div class="carousel-container position-relative row">
+                                        <div class="fotorama" data-nav = "thumbs" data-loop = 'true' data-allowfullscreen = 'true' data-width="400" data-height="400" data-thumbfit='cover' data-thumbwidth="90"
+                                        data-thumbheight="90" data-fit = "contain">
+                                            {% for p in product %}
+                                            <img class = 'image-slides' src="{{p.thumbnail.url}}">
+                                            {% endfor %}
+                                            {% for i in images %}
+                                            <img class = 'image-slides' src="{{i.images.url}}">
+                                            {% endfor %}
+                                          </div>
+                                    </div> <!-- /row -->
+                                  </div> <!-- /container -->
+                                <!-- End .product-image-gallery -->
+                            </div>
+                            <!-- End .row -->
+                        </div>
+                        <!-- End .product-gallery -->
+                    </div>
+                    <!-- End .col-md-6 -->
+
+                    <div class="col-md-6" id = 'product-description-container'>
+                        <!-- PRODUCT INFORMATION -->
+                        {% for p in product %}
+                        <div class="product">
+                            <!--category-breadcrumb-->
+                            <span class="category">{{p.brand}}</span>
+                            <!--stock-label-->
+                            {% if p.availability == 'YES'%}
+                            <span class="stock">In Stock</span>
+                            {% else %}
+                            <span class = 'notstock'>Out of Stock</span>
+                            {% endif %}
+                            <h1>{{p.product_name}}</h1>
+                            <!--PRICE-RATING-REVIEW-->
+                            <div class="block-price-rating clearfix">
+                            <!--price-->
+                            <div class="block-price clearfix">
+                                <div class="price-new clearfix">
+                                <span class="price-new-dollar">NPR {{p.current_price}}</span>
+                                </div>
+                                <div class="price-old clearfix">
+                                {% if p.previous_price %}
+                                <span class="price-old-dollar">NPR {{p.previous_price}}</span>
+                                {% endif %}
+                                </div>  
+                            </div>
+                            <!--rating-->
+                            <div class ='rating-container'>
+                                <div class="my-rating" data-rating={{p.average_rating}}></div>
+                                {% if p.total_review %}
+                                <p class = 'rating-number'>({{p.total_review}} Reviews )</p>
+                                {% else %}
+                                <p class = 'rating-number'>(0 Reviews)</p>
+                                {% endif %}
+                            </div>
+                            </div>
+
+                            <p style="font-size: 12px;"><i>**Price is inclusive of VAT**</i></p>
+                            <!--PRODUCT DESCRIPTION-->
+                            <div class="descr">
+                                {% if p.description %}
+                                <p>{{p.description|linebreaksbr}}</p>
+                                {% endif %}
+                            </div> 
+
+                            {% if p.model_number %}
+                            <div class = 'model-number'>
+                                <p>Model Number :  {{p.model_number}}</p>
+                            </div>
+                            {% endif %}
+                            <!--SELECT BLOCK-->
+                        <div class="block-select clearfix">
+                            
+                            <div class="select-quantity"> 
+                                <p>Quantity</p>
+                                <input type="number" id="qty" class="input-spinner-form" value="1" min="1" max="{{p.quantity}}" step="1" data-decimals="0" required>
+                            </div>
+
+                            <!--BUTTON-->
+                            {% if p.availability == 'YES'%}
+                            <button class="btn-here" id = 'add-to-cart-btn' data-product={{p.id}} data-action = 'add'>Add to cart</button>
+                            {% else %}
+                            <button class="btn-out-of-stock" id = 'out-of-stock-btn' disabled>Out of Stock</button>
+                            <button class="btn-here" id = 'add-to-cart-btn' data-product={{p.id}} data-action = 'add' style ='display: none;'>Add to cart</button>
+                            {% endif %}
+
+                           
+                            </div>
+
+                            </div>
+
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+                    </div>
+                    <!-- End .col-md-6 -->
+                </div>
+                <!-- End .row -->
+            </div>
+            <!-- End .product-details-top -->
+
+            <div class="product-details-tab">
+                <ul class="nav nav-pills justify-content-center" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="product-desc-link" data-toggle="tab" href="#product-desc-tab" role="tab" aria-controls="product-desc-tab" aria-selected="true">Description</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="product-info-link" data-toggle="tab" href="#product-info-tab" role="tab" aria-controls="product-info-tab" aria-selected="false">Specifications</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="product-shipping-link" data-toggle="tab" href="#product-shipping-tab" role="tab" aria-controls="product-shipping-tab" aria-selected="false">Shipping & Returns</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="product-review-link" data-toggle="tab" href="#product-review-tab" role="tab" aria-controls="product-review-tab" aria-selected="false">{% if p.total_review %} Reviews ({{p.total_review}}) {% else %} Reviews (0) {% endif %}</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel" aria-labelledby="product-desc-link">
+                        <div class="product-desc-content">
+                            <p>{{p.description|linebreaksbr}}</p>
+                        </div>
+                        <!-- End .product-desc-content -->
+                    </div>
+                    <!-- .End .tab-pane -->
+                    <div class="tab-pane fade" id="product-info-tab" role="tabpanel" aria-labelledby="product-info-link">
+                        <div class="product-desc-content">
+                            {{p.specifications|safe}}
+                        </div>
+                        <!-- End .product-desc-content -->
+                    </div>
+                    <!-- .End .tab-pane -->
+                    <div class="tab-pane fade" id="product-shipping-tab" role="tabpanel" aria-labelledby="product-shipping-link">
+                        <div class="product-desc-content">
+                            {{p.shipping_and_returns|safe}}
+                        </div>
+                        <!-- End .product-desc-content -->
+                    </div>
+                    <!-- .End .tab-pane -->
+                    <div class="tab-pane fade" id="product-review-tab" role="tabpanel" aria-labelledby="product-review-link">
+                        <div class="reviews">
+
+                            <button type="button" class="btn btn-primary" id = 'review-btn' data-toggle="modal" data-target="#myModal">Review this product</button>
+
+                            {% if p.total_review %}
+                            <h3>Reviews ({{p.total_review}})</h3>
+
+                            {% for e in p.reviews_set.all %}
+                            <div class="review">
+                                <div class="row no-gutters">
+                                    <div class="col-auto">
+                                        <h4><a href="#">{{e.full_name}}</a></h4>
+                                        <div class="ratings-container">
+                                                <div class="my-ratings-val" data-rating = {{e.rating}}></div>
+                                                <!-- End .ratings-val -->
+                                        </div>
+                                        <!-- End .rating-container -->
+                                        <span class="review-date">{{e.created_on}}</span>
+                                    </div>
+                                    <!-- End .col -->
+                                    <div class="col">
+
+                                        <div class="review-content">
+                                            <p>{{e.review}}</p>
+                                        </div>
+                                        <!-- End .review-content -->
+                                    </div>
+                                    <!-- End .col-auto -->
+                                </div>
+                                <!-- End .row -->
+                            </div>
+                            <!-- End .review -->
+                            {% endfor %}
+                            {% else %}
+                            {% if p.total_review %}
+                            <h3>Reviews ({{p.total_review}})</h3>
+                            {% else %}
+                            <h3>Reviews (0)</h3>
+                            {% endif %}
+
+                            <div class="review">
+                                <div class="row no-gutters">
+                                    <!-- End .col -->
+                                    <div class="col">
+                                        <div class="review-content">
+                                            <p>There are no reviews for this product yet. You have to be a registered user and have to purchase this product to be able to review it.</p>
+                                        </div>
+                                        <!-- End .review-content -->
+                                    </div>
+                                    <!-- End .col-auto -->
+                                </div>
+                                <!-- End .row -->
+                            </div>
+                            <!-- End .review -->
+                            {% endif %}
+                        </div>
+                        <!-- End .reviews -->
+                    </div>
+                    <!-- .End .tab-pane -->
+                </div>
+                <!-- End .tab-content -->
+            </div>
+            <!-- End .product-details-tab -->
+
+            <!--  This is the modal content --> 
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <!-- Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Review {{p.product_name}}</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <!--  Body --> 
+                    <div class="modal-body">
+                        <div class="alert alert-danger review-error" style ='display: none;' role="alert">
+                            Fill all the forms to submit
+                          </div>
+                        <div class="form-group row">
+                            <label for="inputfullname" class="col-sm-2 col-form-label">Full Name</label>
+                            <div class="col-sm-10">
+                              <input class="form-control review-form" id="inputfullname" placeholder="Full Name">
+                            </div>
+                          </div>
+                          <div class = 'form-group row'>
+                            <label for="review" class="col-sm-2 col-form-label">Review :</label>
+                            <div class="col-sm-10">
+                                <textarea id="review" class="form-control review-form" name="review"></textarea>
+                            </div>
+                            <div class = 'set-rating-container'>
+                                <p>Rating :</p>
+                                <div class ='set-rating'></div>
+                                <span class="live-rating"></span>
+                            </div>
+                          </div>
+                    </div>
+                    <!-- Footer -->
+                    <div class="modal-footer">
+                        <button type="button" id='submit-review-btn' data-productId = {{p.id}} class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div> <!-- Footer End -->
+                    </div> <!-- Content end -->
+                    </div> <!-- Dialog end -->
+                </div> <!-- Modal end -->
+            {% endfor %}
+
+            <!--------Acknowledgement modal --------->
+
+            <!-- Modal -->
+            <div class="modal fade" id="success" role="dialog">
+                <div class="modal-dialog">
+                
+                <!-- Modal content-->
+                <div class="modal-content" style="border:none;border-radius: 5px;">
+                    <div class="modal-header" style="    background: #1ab394;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;">
+                    <button type="button" class="close" data-dismiss="modal" style="opacity:1;color:#fff;">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                    <p style="text-align:center;color:#1ab394;font-size:24px;font-weight:500;">Review Added Successfully !</p>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+
+            <div class="modal fade" id="fail" role="dialog">
+                <div class="modal-dialog">
+                
+                <!-- Modal content-->
+                <div class="modal-content" style="border:none;border-radius: 5px;">
+                    <div class="modal-header" style="background: #d75a4a;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;">
+                    <button type="button" class="close" data-dismiss="modal" style="opacity:1;color:#fff;">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                    <p id = 'sorry-msg' style="text-align:center;color:#d75a4a;font-size:24px;font-weight:500;"></p>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+
+            {% if rel_list %}
+            <h2>Recommended Products</h2>
+            <!-- End .title text-center -->
+            <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl" data-owl-options='{
+                            "nav": true, 
+                            "center":true,
+                            "dots": true,
+                            "margin": 20,
+                            "loop": false,
+                            "responsive": {
+                                "0": {
+                                    "items":1
+                                },
+                                "480": {
+                                    "items":2
+                                },
+                                "768": {
+                                    "items":3
+                                },
+                                "992": {
+                                    "items":4
+                                },
+                                "1200": {
+                                    "items":5,
+                                    "nav": true,
+                                    "dots": true
+                                }
+                            }
+                        }'>
+                        {% for v in rel_list %}
+                        <div class="product product-7 text-center">
+                            <figure class="product-media">
+                                {% if v.availability == 'NO' %}
+                                <span class="product-label badge bg-danger" style = 'color: white;'>Out of Stock</span>
+                                {% else %}
+                                    {% if v.new == 'YES' %}
+                                    <span class="product-label badge label-new">New</span>
+                                    {% endif %}
+                                    {% if v.sale == 'YES' %}
+                                    <span class="product-label badge bg-danger" style = 'color: white;'>Sale</span>
+                                    {% endif %}
+                                    {% if v.discount_percentage %}
+                                    <span class="product-label label-sale">{{v.discount_percentage}}% Off</span>
+                                    {% endif %}
+                                {% endif %}
+                            
+                                <a href="{% url 'detailed_product' v.slug %}">
+                                    <img src="{{v.thumbnail.url}}" alt="Product image" class="carousel-product-image">
+                                </a>
+                            </figure>
+                            <!-- End .product-media -->
+        
+                            <div class="custom-product">
+                                <div class = 'product-name'>
+                                    {{v.product_name}}
+                                </div>
+                                
+                                <div class ='carousel-rating-container'>
+                                    <div class="my-rating" data-rating={{v.average_rating}}></div>
+                                </div>
+
+                                <div class = 'current-price-container'>
+                                    <p class = 'current-price'> NPR {{v.current_price}}</p>
+                                </div>
+
+                                <div class = 'previous-price-container'>
+                                    {% if v.previous_price %}
+                                    <p class = 'previous-price'><del>NPR {{v.previous_price}}</del></p>
+                                    {% endif %}
+                                    {% if v.discount_percentage %}
+                                    <p class = 'discount'>&nbsp;({{v.discount_percentage}}% off)</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End .product -->
+                           
+                        {% endfor %}
+ 
+            </div>
+            <!-- End .owl-carousel -->
+            {% endif %}
+        </div>
+        <!-- End .container -->
+    </div>
+    <!-- End .page-content -->
+</main>
+<!-- End .main -->
+</body>
+{% endblock %}
+
+{% block script_content %}
+    <script src="{% static 'assets/js/jquery.star-rating-svg.js' %}"></script>
+    <script src = "{% static 'assets/js/cart.js'%}"></script>
+    <script src = "{% static 'assets/js/detailed_product.js'%}"></script>
+{% endblock %}

@@ -1,0 +1,9 @@
+.header-left{
+	padding-top: 15px;
+}
+
+#empty-cart{
+    align-items: center;
+    text-align: center;
+    margin:0 auto;
+}

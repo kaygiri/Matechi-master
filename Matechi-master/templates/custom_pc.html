@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta-contents %}
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content='Buy Acer, Apple MacBook, Asus, HP, Lenovo, Microsoft, MSI Razer Blade, Dell, ultrabook in Nepal at best price at Matechi'/>
+<meta name="keywords" content='Acer, Apple, Asus, HP, Dell, Lenovo, Alienware, MSI, Fantech, Razerblade, Microsoft'/>
+<meta name="robots" content="INDEX,FOLLOW"/>
+<meta name="format-detection" content="telephone=no"/>
+<title>Build your own PC | Dell, HP, Apple MacBook, Acer, Asus, Lenovo, MS</title>
+{% endblock %}
+
+{% block link-content %}
+    <!-- jQuery 1.8 or later, 33 KB -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <!-- Fotorama from CDNJS, 19 KB -->
+    <link  href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/custom_pc.css' %}">
+{% endblock %}
+
+{% block content %}
+<body>
+  <div style = 'display:None' class="alert alert-danger alert-empty" role="alert">
+    Empty Field ! Make sure that all components are selected.
+  </div>
+  <div style = 'display:None' class="alert alert-danger alert-invalid" role="alert">
+    Processor and motherboard are uncompatible ! Please select a different combination.
+  </div>
+    <div class = 'container'>
+        <div class="page-header text-center" style="background-image: url('/static/assets/images/backgrounds/custom-pc-header.jpg')">
+            <div class="container">
+                <h1 class="page-title" style = 'color:rgb(180, 180, 180)'>Build You Own Gaming PC<span style = 'color:rgb(218, 218, 218)'>MATECHI</span></h1>
+            </div>
+            <!-- End .container -->
+        </div>
+    
+        <div class = 'main-div'>
+            <!-----------left carousel------------>
+            <div class = 'left-carousel'>
+                <h3 id ='case-name'>Case Heading</h3>
+                <div class="fotorama" id = 'fotorama-carousel'  data-auto ='false' data-nav = "thumbs" data-width="400" data-height="400" data-thumbfit='cover' data-thumbwidth="90"
+                data-thumbheight="90" data-fit = "contain">
+                </div>
+            </div>
+
+            <!-------Right Tabs -------->
+            <div class = 'right-tabs'>
+                <div class = 'tab-header'>
+                    <button class = 'left-btn'>COMPONENTS</button>
+                </div>
+
+                <form>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputProcessor">Processor</label>
+                        <select data-name = 'processor' id="inputProcessor" class="form-control my-form">
+                          <option data-brand = '' class = 'selected' data-price = '0' selected>Choose...</option>
+                          {% for p in processor %}
+                          <option data-name = '{{p.product_name|linebreaksbr}}' data-id = {{p.id}} data-brand = {{p.brand}} data-price = {{p.current_price}}>{{p.product_name}} &nbsp; &nbsp; [NPR {{p.current_price}}]</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputmb">Motherboard</label>
+                        <select id="inputmb" class="form-control my-form">
+                          <option data-brand = '' class = 'selected' data-price = '0' selected>Choose...</option>
+                          {% for m in motherboard %}
+                          <option data-name = '{{m.product_name|linebreaksbr}}' data-id = {{m.id}} data-brand = {{m.brand}} data-price = {{m.current_price}}>{{m.product_name}} &nbsp; &nbsp; [NPR {{m.current_price}}]</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputgraphics">Graphics Card</label>
+                        <select id="inputgraphics" class="form-control my-form">
+                          <option class = 'selected' data-price = '0' selected>Choose...</option>
+                          {% for g in graphics_card %}
+                          <option data-name = '{{g.product_name|linebreaksbr}}' data-id = {{g.id}} data-price = {{g.current_price}}>{{g.product_name}} &nbsp; &nbsp; [NPR {{g.current_price}}]</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="inputram">Ram</label>
+                        <select id="inputram" class="form-control my-form">
+                          <option data-price = '0' selected>Choose...</option>
+                          {% for r in ram %}
+                          <option data-name = '{{r.product_name|linebreaksbr}}' data-id = {{r.id}} data-price = {{r.current_price}}>{{r.product_name}} &nbsp; &nbsp; [NPR {{r.current_price}}]</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group col-md-2">
+                        <label for="inputqty1">Quantity</label>
+                        <select id="inputqty1" class="form-control my-form">
+                          <option data-qty = 1 selected>1</option>
+                          <option data-qty = 2>2</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="inputps">Primary Storage for OS</label>
+                          <select id="inputps" class="form-control my-form">
+                            <option class = 'selected' data-price = '0' selected>Choose...</option>
+                            {% for ps in primary_storage %}
+                            <option data-name = '{{ps.product_name|linebreaksbr}}' data-id = {{ps.id}} data-price = {{ps.current_price}}>{{ps.product_name}} &nbsp; &nbsp; [NPR {{ps.current_price}}]</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="inputss">Secondary Storage</label>
+                          <select id="inputss" class="form-control my-form">
+                            <option data-price = '0' selected>Choose...</option>
+                            {% for ss in secondary_storage %}
+                            <option data-name = '{{ss.product_name|linebreaksbr}}' data-id = {{ss.id}} data-price = {{ss.current_price}}>{{ss.product_name}} &nbsp; &nbsp; [NPR {{ss.current_price}}]</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                          <label for="inputqty2">Quantity</label>
+                          <select id="inputqty2" class="form-control my-form">
+                            <option data-qty = 1 selected>1</option>
+                            <option data-qty = 2>2</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="inputcase">Case</label>
+                          <select id="inputcase" class="form-control my-form">
+                            {% for c in case %}
+                            {% if forloop.counter == 1 %}
+                            <option class = 'case-select case-selected selected' data-name = '{{c.product_name|linebreaksbr}}' data-id = {{c.id}} data-price = {{c.current_price}} data-thumbnail = {{c.thumbnail.url}} {% for e in c.postimages_set.all %} data-{{forloop.counter}} = {{e.images.url}} {% if forloop.last %} data-loopcounter = {{forloop.counter}}  {% endif %} {% endfor %}>{{c.product_name}} &nbsp; &nbsp; [NPR {{c.current_price}}]</option>
+                            {% else %}
+                            <option class = 'case-select' data-name = '{{c.product_name|linebreaksbr}}' data-id = {{c.id}} data-price = {{c.current_price}} data-thumbnail = {{c.thumbnail.url}} {% for e in c.postimages_set.all %} data-{{forloop.counter}} = {{e.images.url}} {% if forloop.last %} data-loopcounter = {{forloop.counter}}  {% endif %} {% endfor %}>{{c.product_name}} &nbsp; &nbsp;[NPR {{c.current_price}}]</option>
+                            {% endif %}
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="inputcooler">CPU Cooler</label>
+                          <select id="inputcooler" class="form-control my-form">
+                            <option class = 'selected' data-price = '0' selected>Choose...</option>
+                            {% for cp in cpu_cooler %}
+                            <option data-name = '{{cp.product_name|linebreaksbr}}' data-id = {{cp.id}} data-price = {{cp.current_price}}>{{cp.product_name}} &nbsp; &nbsp; [NPR {{cp.current_price}}]</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="inputpsu">PSU</label>
+                          <select id="inputpsu" class="form-control my-form">
+                            <option class = 'selected' data-price = '0' selected>Choose...</option>
+                            {% for p in psu %}
+                            <option data-name = '{{p.product_name|linebreaksbr}}' data-id = {{p.id}} data-price = {{p.current_price}}>{{p.product_name}} &nbsp; &nbsp; [NPR {{p.current_price}}]</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+
+                  </form>
+
+                  <div id ='warning-div'>
+                    <i class="fas fa-exclamation-triangle"></i><p>&nbsp; While selecting components please make sure that the components selected are compatible with each other. Please do your own research to select the best combination of components and check before ordering. Happy Shopping !</p>
+                  </div>
+            </div>
+        </div>
+
+        <div id = 'bottom-container'>
+          <div id = 'total'>
+            <p>Total : Rs</p> &nbsp;<p id = 'total-price'>0</p>
+          </div>
+          <button id = 'submit'>Submit Quotation</button>
+
+        </div>
+    </div>
+</body>
+{% endblock %}
+
+{% block script_content %}
+<!-- Fotorama from CDNJS, 19 KB -->
+<link  href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+<script src = "{% static 'assets/js/custom_pc.js'%}"></script>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta-contents %}
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content='Buy Acer, Apple MacBook, Asus, HP, Lenovo, Microsoft, MSI Razer Blade, Dell, ultrabook in Nepal at best price at Matechi'/>
+<meta name="keywords" content='Acer, Apple, Asus, HP, Dell, Lenovo, Alienware, MSI, Fantech, Razerblade, Microsoft'/>
+<meta name="robots" content="INDEX,FOLLOW"/>
+<meta name="format-detection" content="telephone=no"/>
+<title>Login | Dell, HP, Apple MacBook, Acer, Asus, Lenovo, MS</title>
+{% endblock %}
+
+{% block link-content %}
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<body>
+    <main class="main">
+        <div class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17" style="background-color: rgb(253, 253, 253);">
+            <div class="container">
+                {% if user.is_authenticated %}
+                <div class="form-box">
+                    Currently logged in as :  <b>{{user}}</b><br>
+                    To login using another account. <a href="{% url 'logout' %}" class="forgot-link">Click here</a>
+                </div>
+                {% else %}
+                <div class="form-box">
+                    <div class="form-tab">
+                        <ul class="nav nav-pills nav-fill" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="signin-tab-2" data-toggle="tab" href="#signin-2" role="tab" aria-controls="signin-2" aria-selected="true">Sign In</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade active show" id="signin-2" role="tabpanel" aria-labelledby="signin-tab-2">
+                                <form action="#" method = 'post'>
+                                    {% csrf_token %}
+                                    {% for fm in form %}
+                                    <div class = "form-group">
+                                        {{fm.label_tag}} {{fm}} <small class = "text-danger" >{{fm.errors|striptags}}</small>
+                                    </div>
+                                    {% endfor %}
+                                    <div class="form-footer">
+                                        <button type="submit" class="btn btn-outline-primary-2">
+                                            <span>LOG IN</span>
+                                            <i class="icon-long-arrow-right"></i>
+                                        </button>
+
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="signin-remember-2">
+                                            <label class="custom-control-label" for="signin-remember-2">Remember Me</label>
+                                        </div>
+                                        <!-- End .custom-checkbox -->
+
+                                        <a href="{% url 'password_reset' %}" class="forgot-link">Forgot Your Password ?</a>
+                                    </div>
+                                    <!-- End .form-footer -->
+                                </form>
+                                {% if form.non_field_errors %}
+                                 {% for error in form.non_field_errors %}
+                                  <p class = 'alert alert-danger my-3' style = 'color: white !important;'>{{error}}</p>
+                                 {% endfor %}
+                                {% endif %}
+                                <!-- End .form-choice -->
+                            </div>
+                            <!-- .End .tab-pane -->
+                        </div>
+                        <!-- End .tab-content -->
+                    </div>
+                    <!-- End .form-tab -->
+                </div>
+                <!-- End .form-box -->
+                {% endif %}
+            </div>
+            <!-- End .container -->
+        </div>
+        <!-- End .login-page section-bg -->
+    </main>
+    <!-- End .main -->
+</body>
+{% endblock %}

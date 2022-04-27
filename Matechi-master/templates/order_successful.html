@@ -1,0 +1,146 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block content %}
+<main class="main">
+    <!-- End .breadcrumb-nav -->
+    <div class="container">
+        <p style="font-size:80px; color:#1a1a1a;">Checkout</p>
+        <!-- End .error-title -->
+        <p style="font-size:15px;">&nbsp;&nbsp;&nbsp;Thank you. Your order has been received.</p>
+
+    </div>
+    <!-- End .container -->
+
+    <div class="row justify-content-center">
+        <div class="col-lg-2 col-sm-6">
+            <div class="icon-box icon-box-circle text-center">
+                <div class="icon-box-content">
+                    {% for o in order %}
+                    <p style="font-size:13px;">ORDER NUMBER: </p>
+                    <h5>{{o.id}}</h5>
+
+                </div>
+                <!-- End .icon-box-content -->
+            </div>
+            <!-- End .icon-box -->
+        </div>
+        <!-- End .col-lg-2 col-sm-6 -->
+        <span class="title-separator">/</span>
+
+        <div class="col-lg-2 col-sm-6">
+            <div class="icon-box icon-box-circle text-center">
+
+                <div class="icon-box-content">
+
+                    <p style="font-size:13px;">DATE: </p>
+                    <h5>{{o.ordered_date}}</h5>
+                </div>
+                <!-- End .icon-box-content -->
+            </div>
+            <!-- End .icon-box -->
+        </div>
+        <!-- End .col-lg-2 col-sm-6 -->
+        <span class="title-separator">/</span>
+
+        <div class="col-lg-2 col-sm-6">
+            <div class="icon-box icon-box-circle text-center">
+
+                <div class="icon-box-content">
+
+                    <p style="font-size:13px;">EMAIL: </p>
+                    <h5>{{o.user.email}}</h5>
+                </div>
+                <!-- End .icon-box-content -->
+            </div>
+            <!-- End .icon-box -->
+        </div>
+        <!-- End .col-lg-2 col-sm-6 -->
+        <span class="title-separator">/</span>
+
+        <div class="col-lg-2 col-sm-6">
+            <div class="icon-box icon-box-circle text-center">
+
+                <div class="icon-box-content">
+                    <p style="font-size:13px;">TOTAL: </p>
+                    <h5>Rs : {{o.total_paid_price}}</h5>
+
+                </div>
+                <!-- End .icon-box-content -->
+            </div>
+            <!-- End .icon-box -->
+        </div>
+        <!-- End .col-lg-2 col-sm-6 -->
+        <span class="title-separator">/</span>
+
+        <div class="col-lg-2 col-sm-6">
+            <div class="icon-box icon-box-circle text-center">
+
+                <div class="icon-box-content">
+
+                    <p style="font-size:13px;">PAYMENT METHOD:</p>
+                    <h5>{{o.payment_method}}</h5>
+
+                </div>
+                <!-- End .icon-box-content -->
+            </div>
+            <!-- End .icon-box -->
+        </div>
+        <!-- End .col-lg-2 col-sm-6 -->
+
+        <div>
+            <p>The following addresses will be used on the checkout page by default.</p>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card card-dashboard">
+                        <div class="card-body">
+                            <h3 class="card-title">Billing Address</h3>
+                            <!-- End .card-title -->
+                            {% for e in o.user.customer_set.all %} 
+
+                            <p>{{e.first_name}} {{e.last_name}}<br> {{e.locality}}, {{e.city}}<br><i class="icon-phone"></i> {{e.phone}}
+                                <br><i class="icon-envelope"></i> {{o.user.email}}
+                                <br>
+                            </p>
+                        </div>
+                        <!-- End .card-body -->
+                    </div>
+                    <!-- End .card-dashboard -->
+                </div>
+                <!-- End .col-lg-6 -->
+                {% endfor %}
+
+                <div class="col-lg-6">
+                    <div class="card card-dashboard">
+                        <div class="card-body">
+                            <h3 class="card-title">Shipping Address</h3>
+
+                            <p>{{o.first_name}} {{o.last_name}}<br> {{o.locality}}, {{o.city}}<br><i class="icon-phone"></i> {{o.phone}}
+                                <br><i class="icon-envelope"></i> {{o.user.email}}
+                                <br>
+                                <p>{{o.pickup_address}}</p><br>
+                                {% if o.special_notes %}
+                                <p>{{o.special_notes}}</p><br>
+                                {% endif %}
+                            </p>
+                        </div>
+                        <!-- End .card-body -->
+                    </div>
+                    <!-- End .card-dashboard -->
+                </div>
+                <!-- End .col-lg-6 -->
+            </div>
+            <!-- End .row -->
+        </div>
+        {% endfor %}
+
+
+        <DIV class="container">
+            <a href="{% url 'home' %}" class="btn btn-outline-primary-2 btn-minwidth-lg">
+                <span>CONTINUE SHOPPING</span>
+                <i class="icon-long-arrow-right"></i>
+            </a>
+        </DIV>
+</main>
+<!-- End .main -->
+{% endblock %}
